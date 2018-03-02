@@ -1,0 +1,7 @@
+de.carne.boot.test.ApplicationTest1Main
+# comment test and empty line test in next line
+
+implicitBoolean
+explicitBoolean = false
+stringProperty = aString
+= invalid line
