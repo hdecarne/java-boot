@@ -14,5 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault
 package de.carne.boot;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PACKAGE;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+/**
+ * This element's sub-elements are assumed to be never {@code null} ({@linkplain NonNull}).
+ */
+@Documented
+@Retention(CLASS)
+@Target({ TYPE, METHOD, PACKAGE })
+public @interface NonNullByDefault {
+
+	// Just for code analysis.
+
+}

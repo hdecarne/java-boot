@@ -44,7 +44,7 @@ public final class Application {
 	}
 
 	@SuppressWarnings("squid:S106")
-	private static String error(Throwable thrown, String format, Object... args) {
+	private static String error(@Nullable Throwable thrown, String format, Object... args) {
 		String msg = String.format(format, args);
 
 		System.err.println(msg);

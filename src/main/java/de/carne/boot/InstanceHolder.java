@@ -20,17 +20,15 @@ import java.util.function.Supplier;
 
 /**
  * Helper class used for management of the singleton instances.
- * 
+ *
  * @param <I> The actual instance type.
  */
 final class InstanceHolder<I> implements Supplier<I> {
 
+	@Nullable
 	private I instance = null;
 
 	public I set(I instance) {
-		if (instance == null) {
-			throw new ApplicationInitializationException("Invalid instance argument: " + instance);
-		}
 		if (this.instance != null) {
 			throw new ApplicationInitializationException("Instance holder already initialized");
 		}
@@ -40,10 +38,12 @@ final class InstanceHolder<I> implements Supplier<I> {
 
 	@Override
 	public I get() {
-		if (this.instance == null) {
+		I checkedInstance = this.instance;
+
+		if (checkedInstance == null) {
 			throw new ApplicationInitializationException("Instance holder not yet initialized");
 		}
-		return this.instance;
+		return checkedInstance;
 	}
 
 }
