@@ -123,7 +123,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent) throws IOException {
-		this(jarFileUrl, scanJarFile(jarFileUrl), new ApplicationJarURLStreamHandlerFactory(parent), new ClassFilter());
+		this(jarFileUrl, parent, filter());
 	}
 
 	/**
