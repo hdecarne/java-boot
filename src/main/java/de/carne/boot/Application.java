@@ -183,7 +183,7 @@ public final class Application {
 		}
 	}
 
-	@SuppressWarnings("quid:S2095")
+	@SuppressWarnings("squid:S2095")
 	private static ClassLoader setupClassLoader(URL configUrl) {
 		String configUrlProtocol = configUrl.getProtocol();
 		ClassLoader bootstrapClassLoader = Application.class.getClassLoader();
