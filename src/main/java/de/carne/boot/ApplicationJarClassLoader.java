@@ -131,7 +131,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	 *
 	 * @param jarFileUrl the {@linkplain URL} of the Jar file containing the classes to load.
 	 * @param parent the parent {@linkplain ClassLoader} used to access the jar as well as to load filtered classes.
-	 * @param filter the {@ClassFilter} defining which classes should be loaded from the application Jars.
+	 * @param filter the {@linkplain ClassFilter} defining which classes should be loaded from the application Jars.
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent, ClassFilter filter) throws IOException {
