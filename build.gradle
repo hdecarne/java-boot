@@ -26,14 +26,16 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	jcenter()
+	maven { url "https://oss.jfrog.org/libs-release/" }
+	if(snapshotBuild) {
+		maven { url "https://oss.jfrog.org/libs-snapshot/" }
+	}
 }
 
 dependencies {
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-	
-	testCompile 'org.junit.platform:junit-platform-launcher:1.0.1'
-	
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
+	testImplementation("org.junit.platform:junit-platform-launcher:1.0.1")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
 }
 
 test {
