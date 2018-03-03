@@ -24,15 +24,15 @@ public interface ApplicationMain {
 	/**
 	 * Get application name.
 	 *
-	 * @return The application's name.
+	 * @return the application's name.
 	 */
 	String name();
 
 	/**
 	 * Run application.
 	 *
-	 * @param args Command line arguments.
-	 * @return Application exit status.
+	 * @param args command line arguments.
+	 * @return application exit status.
 	 */
 	int run(String[] args);
 

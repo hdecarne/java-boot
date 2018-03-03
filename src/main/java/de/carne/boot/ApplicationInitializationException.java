@@ -27,7 +27,7 @@ public class ApplicationInitializationException extends RuntimeException {
 	/**
 	 * Construct {@linkplain ApplicationInitializationException}.
 	 *
-	 * @param message The exception message.
+	 * @param message the exception message.
 	 */
 	public ApplicationInitializationException(String message) {
 		super(message);
@@ -36,8 +36,8 @@ public class ApplicationInitializationException extends RuntimeException {
 	/**
 	 * Construct {@linkplain ApplicationInitializationException}.
 	 *
-	 * @param message The exception message.
-	 * @param cause The causing exception.
+	 * @param message the exception message.
+	 * @param cause the causing exception.
 	 */
 	public ApplicationInitializationException(String message, Throwable cause) {
 		super(message, cause);

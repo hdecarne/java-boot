@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 /**
  * Helper class used for management of the singleton instances.
  *
- * @param <I> The actual instance type.
+ * @param <I> the actual instance type.
  */
 final class InstanceHolder<I> implements Supplier<I> {
 

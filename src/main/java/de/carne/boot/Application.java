@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.JarURLConnection;
 import java.net.URL;
 
 /**
@@ -132,18 +133,17 @@ public final class Application {
 					error(e, "Failed to read application configuration: %1$s", configName), e);
 		}
 
-		// Determine application class loader
-
 		// Load & instantiate application main class
 		if (DEBUG) {
 			debug("Loading & instantiating application main class: %1$s", applicationMainName);
 		}
 
+		ClassLoader classLoader = setupClassLoader(configUrl);
 		ApplicationMain applicationMain;
 
 		try {
-			applicationMain = Class.forName(applicationMainName).asSubclass(ApplicationMain.class).getConstructor()
-					.newInstance();
+			applicationMain = Class.forName(applicationMainName, true, classLoader).asSubclass(ApplicationMain.class)
+					.getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {
 			throw new ApplicationInitializationException(
 					error(e, "Failed to load & instantiate application main class: %1$s", applicationMainName), e);
@@ -183,12 +183,40 @@ public final class Application {
 		}
 	}
 
+	private static ClassLoader setupClassLoader(URL configUrl) {
+		String configUrlProtocol = configUrl.getProtocol();
+		ClassLoader bootstrapClassLoader = Application.class.getClassLoader();
+		ApplicationJarClassLoader applicationClassLoader = null;
+
+		if ("jar".equals(configUrlProtocol)) {
+			try {
+				JarURLConnection jarConnection = (JarURLConnection) configUrl.openConnection();
+				ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter()
+						.exclude(Application.class.getPackage().getName());
+
+				applicationClassLoader = new ApplicationJarClassLoader(jarConnection.getJarFileURL(),
+						bootstrapClassLoader, filter);
+				if (DEBUG) {
+					debug("Class-Path:");
+					for (URL url : applicationClassLoader.getURLs()) {
+						debug(" %1$s", url.toExternalForm());
+					}
+				}
+				Thread.currentThread().setContextClassLoader(applicationClassLoader);
+			} catch (IOException e) {
+				throw new ApplicationInitializationException(error(e,
+						"Failed to access application jar via configuration: %1$s", configUrl.toExternalForm()), e);
+			}
+		}
+		return (applicationClassLoader != null ? applicationClassLoader : bootstrapClassLoader);
+	}
+
 	/**
 	 * Get the currently executing {@linkplain ApplicationMain} instance.
 	 *
-	 * @param <T> The actual main class type to retrieve.
-	 * @param clazz The actual type of the {@linkplain ApplicationMain} class.
-	 * @return The currently executing {@linkplain ApplicationMain} class.
+	 * @param <T> the actual main class type to retrieve.
+	 * @param clazz the actual type of the {@linkplain ApplicationMain} class.
+	 * @return the currently executing {@linkplain ApplicationMain} class.
 	 */
 	public static <T extends ApplicationMain> T getMain(Class<T> clazz) {
 		return clazz.cast(APPLICATION_MAIN.get());
