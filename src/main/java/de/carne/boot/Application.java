@@ -196,17 +196,17 @@ public final class Application {
 
 				applicationClassLoader = new ApplicationJarClassLoader(jarConnection.getJarFileURL(),
 						bootstrapClassLoader, filter);
-				if (DEBUG) {
-					debug("Class-Path:");
-					for (URL url : applicationClassLoader.getURLs()) {
-						debug(" %1$s", url.toExternalForm());
-					}
-				}
-				Thread.currentThread().setContextClassLoader(applicationClassLoader);
 			} catch (IOException e) {
 				throw new ApplicationInitializationException(error(e,
 						"Failed to access application jar via configuration: %1$s", configUrl.toExternalForm()), e);
 			}
+			if (DEBUG) {
+				debug("Class-Path:");
+				for (URL url : applicationClassLoader.getURLs()) {
+					debug(" %1$s", url.toExternalForm());
+				}
+			}
+			Thread.currentThread().setContextClassLoader(applicationClassLoader);
 		}
 		return (applicationClassLoader != null ? applicationClassLoader : bootstrapClassLoader);
 	}
