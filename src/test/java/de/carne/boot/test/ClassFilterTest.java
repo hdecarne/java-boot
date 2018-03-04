@@ -31,14 +31,18 @@ class ClassFilterTest {
 	void testFilter() {
 		ClassFilter filter = ApplicationJarClassLoader.filter();
 
+		// Default is to accept all
 		Assertions.assertTrue(filter.matches(getClass().getName()));
+		Assertions.assertTrue(filter.matches(Object.class.getName()));
 
+		// Include everything explicitly
 		filter.include(getClass().getPackage().getName());
 		filter.include(Object.class.getPackage().getName());
 
 		Assertions.assertTrue(filter.matches(getClass().getName()));
 		Assertions.assertTrue(filter.matches(Object.class.getName()));
 
+		// Exclude something (should overrule include)
 		filter.exclude(Object.class.getPackage().getName());
 
 		Assertions.assertTrue(filter.matches(getClass().getName()));

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import de.carne.boot.ApplicationJarClassLoader;
 
 /**
- * Test {@linkplain ApplicationJarClassLoader}.
+ * Test {@linkplain ApplicationJarClassLoader} class.
  */
 class ApplicationJarClassLoaderTest {
 
@@ -41,12 +41,15 @@ class ApplicationJarClassLoaderTest {
 			for (URL classpathUrl : applicationClassloader.getURLs()) {
 				System.out.println(classpathUrl.toExternalForm());
 			}
+
+			// Load a class with dependencies to an included Jar
 			String testJarClass1Name = "de.carne.certmgr.certs.x509.X509CertificateHelper";
 			Class<?> testJarClass1 = Class.forName(testJarClass1Name, false, applicationClassloader);
 
 			Assertions.assertEquals(applicationClassloader, testJarClass1.getClassLoader());
 			Assertions.assertEquals(testJarClass1Name, testJarClass1.getName());
 
+			// Load a class from an included Jar
 			String testJarClass2Name = "org.bouncycastle.LICENSE";
 			Class<?> testJarClass2 = Class.forName(testJarClass2Name, false, applicationClassloader);
 

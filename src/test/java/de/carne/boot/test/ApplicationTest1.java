@@ -27,7 +27,7 @@ import de.carne.boot.Application;
 class ApplicationTest1 {
 
 	@BeforeAll
-	static void setUpBeforeClass() {
+	static void setUpApplication() {
 		System.setProperty("de.carne.boot.Application", "");
 		System.setProperty("de.carne.boot.Application.DEBUG", "true");
 	}

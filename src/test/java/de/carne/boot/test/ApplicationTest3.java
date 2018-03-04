@@ -29,7 +29,7 @@ import de.carne.boot.ApplicationInitializationException;
 class ApplicationTest3 {
 
 	@BeforeAll
-	static void setUpBeforeClass() {
+	static void setUpApplication() {
 		System.setProperty("de.carne.boot.Application", "test3");
 		System.setProperty("de.carne.boot.Application.DEBUG", "true");
 	}
@@ -38,6 +38,7 @@ class ApplicationTest3 {
 
 	@Test
 	void test() {
+		// Fail due to empty application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
 					Application.main(TEST_ARGS);

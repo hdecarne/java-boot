@@ -29,7 +29,7 @@ import de.carne.boot.ApplicationInitializationException;
 class ApplicationTest4 {
 
 	@BeforeAll
-	static void setUpBeforeClass() {
+	static void setUpApplication() {
 		System.setProperty("de.carne.boot.Application", "test4");
 		System.setProperty("de.carne.boot.Application.DEBUG", "true");
 	}
@@ -38,6 +38,7 @@ class ApplicationTest4 {
 
 	@Test
 	void test() {
+		// Fail due to invalid main class in application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
 					Application.main(TEST_ARGS);

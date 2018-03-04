@@ -40,6 +40,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // To make sure System Properties are reset for every test
+    forkEvery = 1
 }
 
 jacoco {
