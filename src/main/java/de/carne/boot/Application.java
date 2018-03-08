@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.StringTokenizer;
 
 /**
  * Generic main class responsible for bootstrapping of the actual application and taking care of proper class loader
@@ -34,7 +35,7 @@ public final class Application {
 	}
 
 	// Early log support
-	private static final boolean DEBUG = Boolean.getBoolean(Application.class.getName() + ".DEBUG");
+	private static final boolean DEBUG = Boolean.getBoolean(Application.class.getName() + ".debug");
 
 	@SuppressWarnings("squid:S106")
 	private static String debug(String format, Object... args) {
@@ -192,9 +193,11 @@ public final class Application {
 		if ("jar".equals(configUrlProtocol)) {
 			try {
 				JarURLConnection jarConnection = (JarURLConnection) configUrl.openConnection();
-				ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter()
-						.exclude(Application.class.getPackage().getName());
+				ApplicationJarClassLoader.ClassFilter filter = getBootstrapClassesFilter();
 
+				if (DEBUG) {
+					debug("Bootstrap-Classes: %1$s", filter);
+				}
 				applicationClassLoader = new ApplicationJarClassLoader(jarConnection.getJarFileURL(),
 						bootstrapClassLoader, filter);
 			} catch (IOException e) {
@@ -210,6 +213,18 @@ public final class Application {
 			Thread.currentThread().setContextClassLoader(applicationClassLoader);
 		}
 		return (applicationClassLoader != null ? applicationClassLoader : bootstrapClassLoader);
+	}
+
+	private static ApplicationJarClassLoader.ClassFilter getBootstrapClassesFilter() {
+		ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter()
+				.exclude(Application.class.getPackage().getName());
+		String bootstrapClassesProperty = System.getProperty(Application.class.getName() + ".bootstrapClasses", "");
+		StringTokenizer bootstrapClasses = new StringTokenizer(bootstrapClassesProperty, "|");
+
+		while (bootstrapClasses.hasMoreTokens()) {
+			filter.exclude(bootstrapClasses.nextToken());
+		}
+		return filter;
 	}
 
 	/**

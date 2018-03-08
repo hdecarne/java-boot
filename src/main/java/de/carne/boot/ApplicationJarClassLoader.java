@@ -101,6 +101,23 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 			return matches;
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder buffer = new StringBuilder();
+
+			buffer.append("includes:");
+			for (String includePrefix : this.includePrefixes) {
+				buffer.append(' ');
+				buffer.append(includePrefix);
+			}
+			buffer.append(" excludes:");
+			for (String excludePrefix : this.excludePrefixes) {
+				buffer.append(' ');
+				buffer.append(excludePrefix);
+			}
+			return super.toString();
+		}
+
 	}
 
 	/**
