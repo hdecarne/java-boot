@@ -29,7 +29,7 @@ class ApplicationTest1 {
 	@BeforeAll
 	static void setUpApplication() {
 		System.setProperty("de.carne.boot.Application", "");
-		System.setProperty("de.carne.boot.Application.DEBUG", "true");
+		System.setProperty("de.carne.boot.Application.debug", "true");
 	}
 
 	private static final String[] TEST_ARGS = new String[] { "--arg", "test1" };
