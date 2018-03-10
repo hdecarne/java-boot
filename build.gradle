@@ -39,9 +39,9 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
-    // To make sure System Properties are reset for every test
-    forkEvery = 1
+	useJUnitPlatform()
+	// To make sure System Properties are reset for every test
+	forkEvery = 1
 }
 
 jacoco {
@@ -82,20 +82,20 @@ publishing {
 					licenses {
 						license {
 							name projectLicense
-				            url projectLicenseUrl
-				            distribution "repo"
-				        }
-				    }
-				    developers {
-				        developer {
-				            id project.resolveProperty("developerId", "DEVELOPER_ID")
-				            name project.resolveProperty("developerName", "DEVELOPER_NAME")
-				            email project.resolveProperty("developerEmail", "DEVELOPER_EMAIL")
-				        }
-				    }
-				    scm {
+							url projectLicenseUrl
+							distribution "repo"
+						}
+					}
+					developers {
+						developer {
+							id project.resolveProperty("developerId", "DEVELOPER_ID")
+							name project.resolveProperty("developerName", "DEVELOPER_NAME")
+							email project.resolveProperty("developerEmail", "DEVELOPER_EMAIL")
+						}
+					}
+					scm {
 						url projectScmUrl
-				    }
+					}
 				}
 			}
 		}
@@ -137,7 +137,7 @@ bintray {
 			gpg {
 				sign = true
 				passphrase = project.resolveProperty("bintrayGpgPassphrase", "BINTRAY_GPG_PASSPHRASE")
-            }
+			}
 		}
 	}
 }
