@@ -38,13 +38,17 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 
 	/**
 	 * By setting an {@linkplain ClassFilter} during {@linkplain ApplicationJarClassLoader} creation the load behavior
-	 * can be fine tuned. Default behavior is to search for all classes in the application Jars first. If a class filter
-	 * is defined only class names matched by the filter are searched in the application Jars.
+	 * can be fine tuned.
 	 */
 	public static class ClassFilter {
 
+		private final boolean parentFirst;
 		private final Set<String> includePrefixes = new HashSet<>();
 		private final Set<String> excludePrefixes = new HashSet<>();
+
+		ClassFilter(boolean parentFirst) {
+			this.parentFirst = parentFirst;
+		}
 
 		/**
 		 * Add an include prefix to the filter.
@@ -66,6 +70,16 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		public ClassFilter exclude(String excludePrefix) {
 			this.excludePrefixes.add(excludePrefix);
 			return this;
+		}
+
+		/**
+		 * Whether to to use normal delegation pattern ({@code true}) for class loading or only use the parent class
+		 * loader for classes not matching the filter ({@code false}).
+		 *
+		 * @return Whether to to use normal delegation pattern ({@code true}) or not ({@code false}).
+		 */
+		public boolean parentFirst() {
+			return this.parentFirst;
 		}
 
 		/**
@@ -123,10 +137,11 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	/**
 	 * Convenience function to create an empty {@linkplain ClassFilter}.
 	 *
+	 * @param parentFirst Whether to use standard delegation ({@code true}) or not ({@code false}).
 	 * @return an empty {@linkplain ClassFilter}.
 	 */
-	public static ClassFilter filter() {
-		return new ClassFilter();
+	public static ClassFilter filter(boolean parentFirst) {
+		return new ClassFilter(parentFirst);
 	}
 
 	private final ClassLoader parent;
@@ -140,7 +155,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent) throws IOException {
-		this(jarFileUrl, parent, filter());
+		this(jarFileUrl, parent, filter(true));
 	}
 
 	/**
@@ -157,7 +172,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 
 	private ApplicationJarClassLoader(URL jarFileUrl, List<String> jarJars, ApplicationJarURLStreamHandlerFactory shf,
 			ClassFilter filter) throws IOException {
-		super(assembleClasspath(jarFileUrl, jarJars, shf), null);
+		super(assembleClasspath(jarFileUrl, jarJars, shf), (filter.parentFirst() ? shf.getResourceLoader() : null));
 		this.parent = shf.getResourceLoader();
 		this.filter = filter;
 	}

@@ -29,9 +29,10 @@ class ClassFilterTest {
 
 	@Test
 	void testFilter() {
-		ClassFilter filter = ApplicationJarClassLoader.filter();
+		ClassFilter filter = ApplicationJarClassLoader.filter(true);
 
 		// Default is to accept all
+		Assertions.assertTrue(filter.parentFirst());
 		Assertions.assertTrue(filter.matches(getClass().getName()));
 		Assertions.assertTrue(filter.matches(Object.class.getName()));
 

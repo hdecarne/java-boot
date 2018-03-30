@@ -216,7 +216,7 @@ public final class Application {
 	}
 
 	private static ApplicationJarClassLoader.ClassFilter getBootstrapClassesFilter() {
-		ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter()
+		ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter(false)
 				.exclude(Application.class.getPackage().getName());
 		String bootstrapClassesProperty = System.getProperty(Application.class.getName() + ".bootstrapClasses", "");
 		StringTokenizer bootstrapClasses = new StringTokenizer(bootstrapClassesProperty, "|");

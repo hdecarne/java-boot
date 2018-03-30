@@ -37,7 +37,7 @@ class ApplicationJarClassLoaderTest {
 
 		try (URLClassLoader testResourceLoader = new URLClassLoader(new URL[] { testJarUrl }, bootstrapClassloader);
 				ApplicationJarClassLoader applicationClassloader = new ApplicationJarClassLoader(testJarUrl,
-						testResourceLoader)) {
+						testResourceLoader, ApplicationJarClassLoader.filter(false))) {
 			for (URL classpathUrl : applicationClassloader.getURLs()) {
 				System.out.println(classpathUrl.toExternalForm());
 			}
