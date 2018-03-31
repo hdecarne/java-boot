@@ -119,7 +119,9 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		public String toString() {
 			StringBuilder buffer = new StringBuilder();
 
-			buffer.append("includes:");
+			buffer.append("parentFirst: ");
+			buffer.append(this.parentFirst);
+			buffer.append(" includes:");
 			for (String includePrefix : this.includePrefixes) {
 				buffer.append(' ');
 				buffer.append(includePrefix);
@@ -129,7 +131,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 				buffer.append(' ');
 				buffer.append(excludePrefix);
 			}
-			return super.toString();
+			return buffer.toString();
 		}
 
 	}

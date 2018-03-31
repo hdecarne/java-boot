@@ -32,6 +32,8 @@ class ClassFilterTest {
 		ClassFilter filter = ApplicationJarClassLoader.filter(true);
 
 		// Default is to accept all
+		System.out.println(filter);
+
 		Assertions.assertTrue(filter.parentFirst());
 		Assertions.assertTrue(filter.matches(getClass().getName()));
 		Assertions.assertTrue(filter.matches(Object.class.getName()));
@@ -39,12 +41,14 @@ class ClassFilterTest {
 		// Include everything explicitly
 		filter.include(getClass().getPackage().getName());
 		filter.include(Object.class.getPackage().getName());
+		System.out.println(filter);
 
 		Assertions.assertTrue(filter.matches(getClass().getName()));
 		Assertions.assertTrue(filter.matches(Object.class.getName()));
 
 		// Exclude something (should overrule include)
 		filter.exclude(Object.class.getPackage().getName());
+		System.out.println(filter);
 
 		Assertions.assertTrue(filter.matches(getClass().getName()));
 		Assertions.assertFalse(filter.matches(Object.class.getName()));
