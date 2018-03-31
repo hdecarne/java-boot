@@ -28,7 +28,8 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 /**
- * {@linkplain ClassLoader} used to load classes from a Jar file including classes from any nested Jar file.
+ * {@linkplain ClassLoader} implementation used to load classes from a single Jar file including any nested Jar file
+ * during class search.
  */
 public final class ApplicationJarClassLoader extends URLClassLoader {
 
@@ -51,7 +52,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		}
 
 		/**
-		 * Add an include prefix to the filter.
+		 * Adds an include prefix to the filter.
 		 *
 		 * @param includePrefix the include prefix to add.
 		 * @return the updated {@linkplain ClassFilter}.
@@ -62,7 +63,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		}
 
 		/**
-		 * Add an exclude prefix to the filter.
+		 * Adds an exclude prefix to the filter.
 		 *
 		 * @param excludePrefix the exclude prefix to add.
 		 * @return the updated {@linkplain ClassFilter}.
@@ -73,21 +74,23 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		}
 
 		/**
-		 * Whether to to use normal delegation pattern ({@code true}) for class loading or only use the parent class
-		 * loader for classes not matching the filter ({@code false}).
+		 * Gets the {@code parentFirst} attribute set during filter creation.
+		 * <p>
+		 * The {@code parentFirst} attribute controls whether the normal delegation pattern for class loading is used
+		 * ({@code true}) or if the parent class loader is only used for classes not matching the filter
+		 * ({@code false}).
 		 *
-		 * @return Whether to to use normal delegation pattern ({@code true}) or not ({@code false}).
+		 * @return whether to to use normal delegation pattern ({@code true}) or not ({@code false}).
 		 */
 		public boolean parentFirst() {
 			return this.parentFirst;
 		}
 
 		/**
-		 * Check whether a specific class name matches the filter.
+		 * Checks whether a specific class name matches the filter.
 		 * <p>
 		 * A class name matches the filter if it matches at least one of the include filters and none of the exclude
 		 * filters.
-		 * </p>
 		 *
 		 * @param name the class name to check.
 		 * @return {@code true} if the class name matches the filter. {@code false} otherwise.
@@ -137,9 +140,9 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	}
 
 	/**
-	 * Convenience function to create an empty {@linkplain ClassFilter}.
+	 * Creates an empty {@linkplain ClassFilter} instance.
 	 *
-	 * @param parentFirst Whether to use standard delegation ({@code true}) or not ({@code false}).
+	 * @param parentFirst whether to use standard delegation ({@code true}) or not ({@code false}).
 	 * @return an empty {@linkplain ClassFilter}.
 	 */
 	public static ClassFilter filter(boolean parentFirst) {
@@ -150,10 +153,10 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	private final ClassFilter filter;
 
 	/**
-	 * Construct {@linkplain ApplicationJarClassLoader}.
+	 * Constructs a new {@linkplain ApplicationJarClassLoader} instance.
 	 *
 	 * @param jarFileUrl the {@linkplain URL} of the Jar file containing the classes to load.
-	 * @param parent the parent {@linkplain ClassLoader} used to access the jar as well as to load filtered classes.
+	 * @param parent the parent {@linkplain ClassLoader} used to access the Far file as well as for delegation.
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent) throws IOException {
@@ -161,11 +164,11 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	}
 
 	/**
-	 * Construct {@linkplain ApplicationJarClassLoader}.
+	 * Constructs a new {@linkplain ApplicationJarClassLoader} instance.
 	 *
 	 * @param jarFileUrl the {@linkplain URL} of the Jar file containing the classes to load.
-	 * @param parent the parent {@linkplain ClassLoader} used to access the jar as well as to load filtered classes.
-	 * @param filter the {@linkplain ClassFilter} defining which classes should be loaded from the application Jars.
+	 * @param parent the parent {@linkplain ClassLoader} used to access the Far file as well as for delegation.
+	 * @param filter the {@linkplain ClassFilter} defining the actual load behavior.
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent, ClassFilter filter) throws IOException {

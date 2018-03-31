@@ -43,7 +43,7 @@ public final class ApplicationURLStreamHandlerFactories implements URLStreamHand
 	}
 
 	/**
-	 * Register an additional protocol.
+	 * Registers an additional protocol.
 	 *
 	 * @param protocol the protocol to register.
 	 * @param factory the {@linkplain URLStreamHandlerFactory} handling the submitted protocol.

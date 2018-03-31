@@ -22,17 +22,17 @@ package de.carne.boot;
 public interface ApplicationMain {
 
 	/**
-	 * Get application name.
+	 * Gets the application's name.
 	 *
 	 * @return the application's name.
 	 */
 	String name();
 
 	/**
-	 * Run application.
+	 * Runs the application.
 	 *
-	 * @param args command line arguments.
-	 * @return application exit status.
+	 * @param args the command line arguments.
+	 * @return the application exit status.
 	 */
 	int run(String[] args);
 

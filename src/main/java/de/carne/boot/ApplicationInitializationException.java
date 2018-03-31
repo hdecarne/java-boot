@@ -17,7 +17,7 @@
 package de.carne.boot;
 
 /**
- * This exception indicates an initialization error during application startup.
+ * {@code ApplicationInitializationException} indicates an initialization error during application startup.
  */
 public class ApplicationInitializationException extends RuntimeException {
 
@@ -25,7 +25,7 @@ public class ApplicationInitializationException extends RuntimeException {
 	private static final long serialVersionUID = 320622053571968997L;
 
 	/**
-	 * Construct {@linkplain ApplicationInitializationException}.
+	 * Constructs a new {@linkplain ApplicationInitializationException} instance.
 	 *
 	 * @param message the exception message.
 	 */
@@ -34,7 +34,7 @@ public class ApplicationInitializationException extends RuntimeException {
 	}
 
 	/**
-	 * Construct {@linkplain ApplicationInitializationException}.
+	 * Constructs a new {@linkplain ApplicationInitializationException} instance.
 	 *
 	 * @param message the exception message.
 	 * @param cause the causing exception.

@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 /**
- * Generic main class responsible for bootstrapping of the actual application and taking care of proper class loader
- * setup depending on the execution context.
+ * Generic main class responsible for bootstrapping of the actual application. This also includes the proper setup of
+ * the class loader depending on the execution context.
  */
 public final class Application {
 
@@ -59,9 +59,9 @@ public final class Application {
 	private static final InstanceHolder<ApplicationMain> APPLICATION_MAIN = new InstanceHolder<>();
 
 	/**
-	 * Main entry point.
+	 * Runs the application.
 	 *
-	 * @param args Command line arguments.
+	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
 		boolean testMode = false;
@@ -228,11 +228,11 @@ public final class Application {
 	}
 
 	/**
-	 * Get the currently executing {@linkplain ApplicationMain} instance.
+	 * Gets the currently running {@linkplain ApplicationMain} instance.
 	 *
 	 * @param <T> the actual main class type to retrieve.
 	 * @param clazz the actual type of the {@linkplain ApplicationMain} class.
-	 * @return the currently executing {@linkplain ApplicationMain} class.
+	 * @return the currently running {@linkplain ApplicationMain} class.
 	 */
 	public static <T extends ApplicationMain> T getMain(Class<T> clazz) {
 		return clazz.cast(APPLICATION_MAIN.get());
