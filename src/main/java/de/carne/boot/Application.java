@@ -221,8 +221,7 @@ public final class Application {
 			try {
 				JarURLConnection jarConnection = (JarURLConnection) codeLocation.openConnection();
 
-				applicationClassLoader = new ApplicationJarClassLoader(jarConnection.getJarFileURL(),
-						bootstrapClassLoader);
+				applicationClassLoader = new ApplicationJarClassLoader(jarConnection, bootstrapClassLoader);
 			} catch (IOException e) {
 				throw new ApplicationInitializationException(error(e,
 						"Failed to access application jar via configuration: %1$s", codeLocation.toExternalForm()), e);

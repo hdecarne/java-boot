@@ -16,9 +16,9 @@
  */
 package de.carne.boot.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,9 +35,8 @@ class ApplicationJarClassLoaderTest {
 		ClassLoader bootstrapClassloader = getClass().getClassLoader();
 		URL testJarUrl = bootstrapClassloader.getResource("test.jar");
 
-		try (URLClassLoader testResourceLoader = new URLClassLoader(new URL[] { testJarUrl }, bootstrapClassloader);
-				ApplicationJarClassLoader applicationClassloader = new ApplicationJarClassLoader(testJarUrl,
-						testResourceLoader)) {
+		try (ApplicationJarClassLoader applicationClassloader = new ApplicationJarClassLoader(
+				new File(testJarUrl.getPath()), bootstrapClassloader)) {
 			for (URL classpathUrl : applicationClassloader.getURLs()) {
 				System.out.println(classpathUrl.toExternalForm());
 			}
@@ -46,7 +45,7 @@ class ApplicationJarClassLoaderTest {
 			String testJarClass1Name = "de.carne.certmgr.certs.x509.X509CertificateHelper";
 			Class<?> testJarClass1 = Class.forName(testJarClass1Name, false, applicationClassloader);
 
-			Assertions.assertEquals(testResourceLoader, testJarClass1.getClassLoader());
+			Assertions.assertEquals(applicationClassloader.getParent(), testJarClass1.getClassLoader());
 			Assertions.assertEquals(testJarClass1Name, testJarClass1.getName());
 
 			// Load a class from an included Jar

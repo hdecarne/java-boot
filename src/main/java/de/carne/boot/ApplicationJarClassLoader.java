@@ -16,14 +16,16 @@
  */
 package de.carne.boot;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@linkplain ClassLoader} implementation used to load classes from a single Jar file including any nested Jar file
@@ -38,37 +40,56 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	/**
 	 * Constructs a new {@linkplain ApplicationJarClassLoader} instance.
 	 *
-	 * @param jarFileUrl the {@linkplain URL} of the Jar file containing the classes to load.
-	 * @param parent the parent {@linkplain ClassLoader} used to access the Jar file as well as for delegation.
+	 * @param jarFile the the Jar file containing the classes to load.
+	 * @param parent the parent {@linkplain ClassLoader} to use for delegation.
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
-	public ApplicationJarClassLoader(URL jarFileUrl, ClassLoader parent) throws IOException {
-		this(scanJarFile(jarFileUrl), new ApplicationJarURLStreamHandlerFactory(parent));
+	public ApplicationJarClassLoader(File jarFile, ClassLoader parent) throws IOException {
+		this(jarFile, new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, parent));
 	}
 
-	private ApplicationJarClassLoader(List<String> jarJars, ApplicationJarURLStreamHandlerFactory shf)
+	private ApplicationJarClassLoader(File jarFile, URLClassLoader jarLoader) throws IOException {
+		super(assembleExternalJarClasspath(jarFile, jarLoader), jarLoader);
+	}
+
+	ApplicationJarClassLoader(JarURLConnection inlineJarConnection, ClassLoader parent) throws IOException {
+		super(assembleInlineJarClasspath(inlineJarConnection, parent), parent);
+	}
+
+	private static URL[] assembleInlineJarClasspath(JarURLConnection jarConnection, ClassLoader jarLoader)
 			throws IOException {
-		super(assembleClasspath(jarJars, shf), shf.getResourceLoader());
-	}
-
-	private static List<String> scanJarFile(URL jarFileUrl) throws IOException {
 		List<String> jarJars;
 
-		try (JarFile jarFile = new JarFile(jarFileUrl.getFile())) {
-			jarJars = jarFile.stream().filter(entry -> entry.getName().endsWith(".jar")).map(JarEntry::getName)
+		try (Stream<JarEntry> jarEntries = jarConnection.getJarFile().stream()) {
+			jarJars = jarEntries.filter(entry -> entry.getName().endsWith(".jar")).map(JarEntry::getName)
 					.collect(Collectors.toList());
 		}
-		return jarJars;
+		return assembleClasspath(jarJars, jarLoader);
 	}
 
-	private static URL[] assembleClasspath(List<String> jarJars, ApplicationJarURLStreamHandlerFactory shf)
-			throws IOException {
-		List<URL> classpathUrls = new ArrayList<>();
+	private static URL[] assembleExternalJarClasspath(File file, ClassLoader jarLoader) throws IOException {
+		List<String> jarJars;
 
-		for (String jarJar : jarJars) {
-			classpathUrls.add(shf.getJarJarUrl(jarJar));
+		try (JarFile jarFile = new JarFile(file); Stream<JarEntry> jarEntries = jarFile.stream()) {
+			jarJars = jarEntries.filter(entry -> entry.getName().endsWith(".jar")).map(JarEntry::getName)
+					.collect(Collectors.toList());
 		}
-		return classpathUrls.toArray(new URL[classpathUrls.size()]);
+		return assembleClasspath(jarJars, jarLoader);
+	}
+
+	private static URL[] assembleClasspath(List<String> jarJars, ClassLoader jarLoader) throws IOException {
+		URL[] classpath = new URL[jarJars.size()];
+
+		if (classpath.length > 0) {
+			ApplicationJarURLStreamHandlerFactory jarShf = new ApplicationJarURLStreamHandlerFactory(jarLoader);
+			int classpathIndex = 0;
+
+			for (String jarJar : jarJars) {
+				classpath[classpathIndex] = jarShf.getJarJarUrl(jarJar);
+				classpathIndex++;
+			}
+		}
+		return classpath;
 	}
 
 }
