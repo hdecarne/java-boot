@@ -64,11 +64,11 @@ public final class Application {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		final boolean testMode = (DEBUG ? new Exception().getStackTrace().length > 1 : false);
+		final boolean launcherMode = (DEBUG ? new Exception().getStackTrace().length > 1 : false);
 
 		if (DEBUG) {
 			debug("Booting application...");
-			debug("Test mode detected: " + testMode);
+			debug("Launcher mode detected: " + launcherMode);
 		}
 
 		int status = -1;
@@ -80,7 +80,7 @@ public final class Application {
 			}
 		} catch (RuntimeException e) {
 			error(e, "Application failed with exception: %1$s", e.getClass().getTypeName());
-			if (testMode) {
+			if (launcherMode) {
 				throw e;
 			}
 		}
@@ -189,6 +189,9 @@ public final class Application {
 	private static void evalConfigProperty(String propertyLine) {
 		String trimmedPropertyLine = propertyLine.trim();
 
+		if (DEBUG) {
+			debug(" %1$s", trimmedPropertyLine);
+		}
 		if (trimmedPropertyLine.length() > 0 && !trimmedPropertyLine.startsWith("#")) {
 			int splitIndex = trimmedPropertyLine.indexOf('=');
 
