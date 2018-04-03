@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.StringTokenizer;
+import java.util.Enumeration;
 
 /**
  * Generic main class responsible for bootstrapping of the actual application. This also includes the proper setup of
@@ -64,18 +64,17 @@ public final class Application {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		boolean testMode = false;
+		final boolean testMode = (DEBUG ? new Exception().getStackTrace().length > 1 : false);
 
 		if (DEBUG) {
 			debug("Booting application...");
-			testMode = new Exception().getStackTrace().length > 1;
 			debug("Test mode detected: " + testMode);
 		}
 
 		int status = -1;
 
 		try {
-			status = APPLICATION_MAIN.set(evalConfig()).run(args);
+			status = APPLICATION_MAIN.set(setupApplication()).run(args);
 			if (DEBUG) {
 				debug("Application finished with status: %1$d", status);
 			}
@@ -90,19 +89,42 @@ public final class Application {
 		}
 	}
 
-	private static ApplicationMain evalConfig() {
+	private static ApplicationMain setupApplication() {
+		// Setup ClassLoader
+		ClassLoader applicationClassLoader = setupApplicationClassLoader();
+
 		// Determine application configuration resource
-		String configName = getConfigName();
+		String configName = getApplicationConfigName();
 
 		if (DEBUG) {
 			debug("Using application configuration: %1$s", configName);
 		}
 
-		URL configUrl = Application.class.getResource(configName);
+		Enumeration<URL> configUrls;
 
-		if (configUrl == null) {
+		try {
+			configUrls = applicationClassLoader.getResources(configName);
+		} catch (IOException e) {
+			throw new ApplicationInitializationException(
+					error(e, "Failed to locate application configuration: %1$s", configName));
+		}
+		if (!configUrls.hasMoreElements()) {
 			throw new ApplicationInitializationException(
 					error(null, "Failed to locate application configuration: %1$s", configName));
+		}
+
+		URL configUrl = configUrls.nextElement();
+
+		if (configUrls.hasMoreElements()) {
+			StringBuilder configUrlsString = new StringBuilder();
+
+			configUrlsString.append(configUrl.toExternalForm());
+			do {
+				configUrlsString.append(System.lineSeparator()).append('\t')
+						.append(configUrls.nextElement().toExternalForm());
+			} while (configUrls.hasMoreElements());
+			throw new ApplicationInitializationException(
+					error(null, "Found multiple application configurations: %1$s", configUrlsString));
 		}
 
 		if (DEBUG) {
@@ -139,12 +161,11 @@ public final class Application {
 			debug("Loading & instantiating application main class: %1$s", applicationMainName);
 		}
 
-		ClassLoader classLoader = setupClassLoader(configUrl);
 		ApplicationMain applicationMain;
 
 		try {
-			applicationMain = Class.forName(applicationMainName, true, classLoader).asSubclass(ApplicationMain.class)
-					.getConstructor().newInstance();
+			applicationMain = Class.forName(applicationMainName, true, applicationClassLoader)
+					.asSubclass(ApplicationMain.class).getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {
 			throw new ApplicationInitializationException(
 					error(e, "Failed to load & instantiate application main class: %1$s", applicationMainName), e);
@@ -152,10 +173,10 @@ public final class Application {
 		return applicationMain;
 	}
 
-	private static String getConfigName() {
+	private static String getApplicationConfigName() {
 		StringBuilder configName = new StringBuilder();
 
-		configName.append("/META-INF/").append(Application.class.getName());
+		configName.append("META-INF/").append(Application.class.getName());
 
 		String configNameSuffix = System.getProperty(Application.class.getName());
 
@@ -185,24 +206,26 @@ public final class Application {
 	}
 
 	@SuppressWarnings("squid:S2095")
-	private static ClassLoader setupClassLoader(URL configUrl) {
-		String configUrlProtocol = configUrl.getProtocol();
-		ClassLoader bootstrapClassLoader = Application.class.getClassLoader();
+	private static ClassLoader setupApplicationClassLoader() {
+		URL codeLocation = Application.class.getResource(Application.class.getSimpleName() + ".class");
+
+		if (DEBUG) {
+			debug("Code location: %1$s", codeLocation.toExternalForm());
+		}
+
+		String codeLocationProtocol = codeLocation.getProtocol();
+		ClassLoader bootstrapClassLoader = Thread.currentThread().getContextClassLoader();
 		ApplicationJarClassLoader applicationClassLoader = null;
 
-		if ("jar".equals(configUrlProtocol)) {
+		if ("jar".equals(codeLocationProtocol)) {
 			try {
-				JarURLConnection jarConnection = (JarURLConnection) configUrl.openConnection();
-				ApplicationJarClassLoader.ClassFilter filter = getBootstrapClassesFilter();
+				JarURLConnection jarConnection = (JarURLConnection) codeLocation.openConnection();
 
-				if (DEBUG) {
-					debug("Bootstrap-Classes: %1$s", filter);
-				}
 				applicationClassLoader = new ApplicationJarClassLoader(jarConnection.getJarFileURL(),
-						bootstrapClassLoader, filter);
+						bootstrapClassLoader);
 			} catch (IOException e) {
 				throw new ApplicationInitializationException(error(e,
-						"Failed to access application jar via configuration: %1$s", configUrl.toExternalForm()), e);
+						"Failed to access application jar via configuration: %1$s", codeLocation.toExternalForm()), e);
 			}
 			if (DEBUG) {
 				debug("Class-Path:");
@@ -213,18 +236,6 @@ public final class Application {
 			Thread.currentThread().setContextClassLoader(applicationClassLoader);
 		}
 		return (applicationClassLoader != null ? applicationClassLoader : bootstrapClassLoader);
-	}
-
-	private static ApplicationJarClassLoader.ClassFilter getBootstrapClassesFilter() {
-		ApplicationJarClassLoader.ClassFilter filter = ApplicationJarClassLoader.filter(false)
-				.exclude(Application.class.getPackage().getName());
-		String bootstrapClassesProperty = System.getProperty(Application.class.getName() + ".bootstrapClasses", "");
-		StringTokenizer bootstrapClasses = new StringTokenizer(bootstrapClassesProperty, "|");
-
-		while (bootstrapClasses.hasMoreTokens()) {
-			filter.exclude(bootstrapClasses.nextToken());
-		}
-		return filter;
 	}
 
 	/**

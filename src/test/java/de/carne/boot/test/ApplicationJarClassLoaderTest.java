@@ -37,7 +37,7 @@ class ApplicationJarClassLoaderTest {
 
 		try (URLClassLoader testResourceLoader = new URLClassLoader(new URL[] { testJarUrl }, bootstrapClassloader);
 				ApplicationJarClassLoader applicationClassloader = new ApplicationJarClassLoader(testJarUrl,
-						testResourceLoader, ApplicationJarClassLoader.filter(false))) {
+						testResourceLoader)) {
 			for (URL classpathUrl : applicationClassloader.getURLs()) {
 				System.out.println(classpathUrl.toExternalForm());
 			}
@@ -46,7 +46,7 @@ class ApplicationJarClassLoaderTest {
 			String testJarClass1Name = "de.carne.certmgr.certs.x509.X509CertificateHelper";
 			Class<?> testJarClass1 = Class.forName(testJarClass1Name, false, applicationClassloader);
 
-			Assertions.assertEquals(applicationClassloader, testJarClass1.getClassLoader());
+			Assertions.assertEquals(testResourceLoader, testJarClass1.getClassLoader());
 			Assertions.assertEquals(testJarClass1Name, testJarClass1.getName());
 
 			// Load a class from an included Jar

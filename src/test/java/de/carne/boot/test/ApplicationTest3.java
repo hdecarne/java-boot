@@ -37,14 +37,14 @@ class ApplicationTest3 {
 	private static final String[] TEST_ARGS = new String[] {};
 
 	@Test
-	void test() {
+	void testFailure() {
 		// Fail due to empty application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
 					Application.main(TEST_ARGS);
 				});
 
-		Assertions.assertEquals("Failed to read application configuration: /META-INF/de.carne.boot.Application.test3",
+		Assertions.assertEquals("Failed to read application configuration: META-INF/de.carne.boot.Application.test3",
 				exception.getMessage());
 	}
 

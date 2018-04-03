@@ -44,7 +44,7 @@ class ApplicationTest2 {
 					Application.main(TEST_ARGS);
 				});
 
-		Assertions.assertEquals("Failed to locate application configuration: /META-INF/de.carne.boot.Application.test2",
+		Assertions.assertEquals("Failed to locate application configuration: META-INF/de.carne.boot.Application.test2",
 				exception.getMessage());
 	}
 

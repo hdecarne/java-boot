@@ -28,7 +28,7 @@ class ApplicationTest1 {
 
 	@BeforeAll
 	static void setUpApplication() {
-		System.setProperty("de.carne.boot.Application", "");
+		System.setProperty("de.carne.boot.Application", "test1");
 		System.setProperty("de.carne.boot.Application.debug", "true");
 	}
 
