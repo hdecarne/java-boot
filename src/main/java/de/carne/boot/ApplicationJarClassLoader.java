@@ -45,11 +45,11 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
 	public ApplicationJarClassLoader(File jarFile, ClassLoader parent) throws IOException {
-		this(jarFile, new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, parent));
+		this(jarFile, new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, parent), parent);
 	}
 
-	private ApplicationJarClassLoader(File jarFile, URLClassLoader jarLoader) throws IOException {
-		super(assembleExternalJarClasspath(jarFile, jarLoader), jarLoader);
+	private ApplicationJarClassLoader(File jarFile, URLClassLoader jarLoader, ClassLoader parent) throws IOException {
+		super(assembleExternalJarClasspath(jarFile, jarLoader), parent);
 	}
 
 	ApplicationJarClassLoader(JarURLConnection inlineJarConnection, ClassLoader parent) throws IOException {
