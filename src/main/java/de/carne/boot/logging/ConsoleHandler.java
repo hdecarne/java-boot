@@ -23,7 +23,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * A {@linkplain java.util.logging.Handler} which makes use of the {@linkplain Console} class.

@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.boot.test;
 
-import de.carne.boot.NonNullByDefault;
+import de.carne.boot.check.NonNullByDefault;

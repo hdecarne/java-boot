@@ -26,6 +26,8 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import de.carne.boot.check.Nullable;
+
 final class ApplicationJarURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
 	private static final String PROTOCOL_PREFIX = "jarjar";

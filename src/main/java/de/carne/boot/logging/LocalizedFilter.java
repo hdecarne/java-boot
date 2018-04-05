@@ -19,7 +19,7 @@ package de.carne.boot.logging;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain Filter} for logging of localized messages only.

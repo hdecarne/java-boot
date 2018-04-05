@@ -15,6 +15,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 @NonNullByDefault
-package de.carne.boot.logging;
-
-import de.carne.boot.check.NonNullByDefault;
+package de.carne.boot.check;

@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * Utility class providing {@linkplain Log} related functions.

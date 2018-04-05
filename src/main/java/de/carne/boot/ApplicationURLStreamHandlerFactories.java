@@ -22,6 +22,8 @@ import java.net.URLStreamHandlerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.carne.boot.check.Nullable;
+
 /**
  * {@linkplain URLStreamHandlerFactory} implementation that supports multiple protocol handlers per VM by multiplexing
  * the protocol specific requests.

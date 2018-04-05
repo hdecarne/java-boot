@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * This class is used to record {@linkplain LogRecord}s in a selective manner (e.g. to display detailed results of long

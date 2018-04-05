@@ -18,6 +18,8 @@ package de.carne.boot;
 
 import java.util.function.Supplier;
 
+import de.carne.boot.check.Nullable;
+
 /**
  * Helper class used for management of the singleton instances.
  *

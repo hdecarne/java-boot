@@ -26,7 +26,7 @@ import java.util.logging.ErrorManager;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain Formatter} implementation providing a simple static single line (except for stack trace information) log

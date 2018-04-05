@@ -24,6 +24,8 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 
+import de.carne.boot.check.Nullable;
+
 /**
  * Generic main class responsible for bootstrapping of the actual application. This also includes the proper setup of
  * the class loader depending on the execution context.

@@ -30,7 +30,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.boot.Nullable;
+import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain Handler} implementation used to add/remove {@linkplain Handler} instances programmatically during
