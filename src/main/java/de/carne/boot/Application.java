@@ -66,16 +66,14 @@ public final class Application {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		final boolean launcherMode = (DEBUG ? new Exception().getStackTrace().length > 1 : false);
-
-		if (DEBUG) {
-			debug("Booting application...");
-			debug("Launcher mode detected: " + launcherMode);
-		}
-
+		final boolean launcherMode = new Exception().getStackTrace().length > 1;
 		int status = -1;
 
 		try {
+			if (DEBUG) {
+				debug("Booting application...");
+				debug("Launcher mode detected: " + launcherMode);
+			}
 			status = APPLICATION_MAIN.set(setupApplication()).run(args);
 			if (DEBUG) {
 				debug("Application finished with status: %1$d", status);
@@ -86,7 +84,7 @@ public final class Application {
 				throw e;
 			}
 		}
-		if (status != 0) {
+		if (status != 0 && !launcherMode) {
 			System.exit(status);
 		}
 	}
