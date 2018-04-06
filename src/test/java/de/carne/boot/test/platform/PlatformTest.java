@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.boot.test;
+package de.carne.boot.test.platform;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.boot.Platform;
+import de.carne.boot.platform.Platform;
 
 /**
  * Test {@linkplain Platform} class.

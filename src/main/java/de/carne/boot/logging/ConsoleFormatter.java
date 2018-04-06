@@ -28,8 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.Platform;
 import de.carne.boot.check.Nullable;
+import de.carne.boot.platform.Platform;
 
 /**
  * A {@linkplain Formatter} providing a simple out of the box log line format.
