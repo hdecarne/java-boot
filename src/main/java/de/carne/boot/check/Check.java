@@ -16,6 +16,8 @@
  */
 package de.carne.boot.check;
 
+import java.text.MessageFormat;
+
 /**
  * Utility class providing code check related functions.
  */
@@ -26,11 +28,11 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@linkplain Object} is not {@code null}.
+	 * Checks and ensures that an {@linkplain Object} is not {@code null}.
 	 *
-	 * @param <T> The actual object type.
-	 * @param object The {@linkplain Object} to check.
-	 * @return The checked {@linkplain Object} (never {@code null}).
+	 * @param <T> the actual object type.
+	 * @param object the {@linkplain Object} to check.
+	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
 	public static <T> T notNull(@Nullable T object) {
@@ -41,28 +43,31 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@linkplain Object} is not {@code null}.
+	 * Checks and ensures that an {@linkplain Object} is not {@code null}.
+	 * <p>
+	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
 	 *
-	 * @param <T> The actual object type.
-	 * @param object The {@linkplain Object} to check.
-	 * @param message The message to issue if the check fails.
-	 * @return The checked {@linkplain Object} (never {@code null}).
+	 * @param <T> the actual object type.
+	 * @param object the {@linkplain Object} to check.
+	 * @param pattern the exception message pattern to use in case the check fails.
+	 * @param arguments the exception message arguments to use in case the check fails.
+	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	public static <T> T notNull(@Nullable T object, String message) {
+	public static <T> T notNull(@Nullable T object, String pattern, Object... arguments) {
 		if (object == null) {
-			throw new NullPointerException(message);
+			throw new NullPointerException(formatMessage(pattern, arguments));
 		}
 		return object;
 	}
 
 	/**
-	 * Check and ensure that an {@linkplain Object} is an instance of a specific type.
+	 * Checks and ensures that an {@linkplain Object} is an instance of a specific type.
 	 *
-	 * @param <T> The type to ensure.
-	 * @param object The {@linkplain Object} to check.
-	 * @param type The type to ensure.
-	 * @return The checked {@linkplain Object} (casted to the checked type}).
+	 * @param <T> the type to ensure.
+	 * @param object the {@linkplain Object} to check.
+	 * @param type the type to ensure.
+	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
 	public static <T> T isInstanceOf(Object object, Class<T> type) {
@@ -73,30 +78,29 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@linkplain Object} is an instance of a specific type.
+	 * Checks and ensures that an {@linkplain Object} is an instance of a specific type.
 	 * <p>
-	 * In case the check fails the {@linkplain String#format(String, Object...)} function is used to format the
-	 * exception message.
+	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
 	 *
-	 * @param <T> The type to ensure.
-	 * @param object The {@linkplain Object} to check.
-	 * @param type The type to ensure.
-	 * @param format The format of the message to issue if the check fails.
-	 * @param args The arguments to use for message formatting.
-	 * @return The checked {@linkplain Object} (casted to the checked type}).
+	 * @param <T> the type to ensure.
+	 * @param object the {@linkplain Object} to check.
+	 * @param type the type to ensure.
+	 * @param pattern the exception message pattern to use in case the check fails.
+	 * @param arguments the exception message arguments to use in case the check fails.
+	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <T> T isInstanceOf(Object object, Class<T> type, String format, Object... args) {
+	public static <T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
 		if (!type.isAssignableFrom(object.getClass())) {
-			throw new IllegalArgumentException(String.format(format, args));
+			throw new IllegalArgumentException(formatMessage(pattern, arguments));
 		}
 		return type.cast(object);
 	}
 
 	/**
-	 * Check and ensure that a specific condition is met.
+	 * Checks and ensures that a specific condition is met.
 	 *
-	 * @param condition The condition to check.
+	 * @param condition the condition to check.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
 	public static void assertTrue(boolean condition) {
@@ -106,20 +110,23 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that a specific condition is met.
+	 * Checks and ensures that a specific condition is met.
+	 * <p>
+	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
 	 *
-	 * @param condition The condition to check.
-	 * @param message The message to issue if the check fails.
+	 * @param condition the condition to check.
+	 * @param pattern the exception message pattern to use in case the check fails.
+	 * @param arguments the exception message arguments to use in case the check fails.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
-	public static void assertTrue(boolean condition, String message) {
+	public static void assertTrue(boolean condition, String pattern, Object... arguments) {
 		if (!condition) {
-			throw new IllegalStateException(message);
+			throw new IllegalStateException(formatMessage(pattern, arguments));
 		}
 	}
 
 	/**
-	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
+	 * Throws an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
 	 *
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
@@ -129,14 +136,21 @@ public final class Check {
 	}
 
 	/**
-	 * Throw an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
+	 * Throws an {@linkplain IllegalStateException} to indicate that an unexpected execution state occurred.
+	 * <p>
+	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
 	 *
-	 * @param message The message to issue if the check fails.
+	 * @param pattern the exception message pattern to use in case the check fails.
+	 * @param arguments the exception message arguments to use in case the check fails.
 	 * @return Nothing (function never returns).
 	 * @throws IllegalStateException any time this function is called.
 	 */
-	public static IllegalStateException fail(String message) {
-		throw new IllegalStateException(message);
+	public static IllegalStateException fail(String pattern, Object... arguments) {
+		throw new IllegalStateException(formatMessage(pattern, arguments));
+	}
+
+	private static String formatMessage(String pattern, Object... arguments) {
+		return (arguments.length > 0 ? MessageFormat.format(pattern, arguments) : pattern);
 	}
 
 }
