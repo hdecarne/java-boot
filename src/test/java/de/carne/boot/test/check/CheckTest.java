@@ -84,4 +84,9 @@ class CheckTest {
 		});
 	}
 
+	@Test
+	void testCheckUnexpected() {
+		Assertions.assertThrows(IllegalStateException.class, () -> Check.unexpected(this));
+	}
+
 }

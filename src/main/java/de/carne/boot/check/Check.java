@@ -149,6 +149,17 @@ public final class Check {
 		throw new IllegalStateException(formatMessage(pattern, arguments));
 	}
 
+	/**
+	 * Throws an {@linkplain IllegalStateException} to indicate that an unexpected data object has been encountered.
+	 *
+	 * @param object the unexpected data object:
+	 * @return Nothing (function never returns).
+	 * @throws IllegalStateException any time this function is called.
+	 */
+	public static IllegalStateException unexpected(Object object) {
+		throw new IllegalStateException("Unexpected " + object.getClass().getName() + ": " + object);
+	}
+
 	private static String formatMessage(String pattern, Object... arguments) {
 		return (arguments.length > 0 ? MessageFormat.format(pattern, arguments) : pattern);
 	}
