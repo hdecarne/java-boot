@@ -44,6 +44,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	 * @param parent the parent {@linkplain ClassLoader} to use for delegation.
 	 * @throws IOException if an I/O error occurs while accessing the Jar file.
 	 */
+	@SuppressWarnings("resource")
 	public ApplicationJarClassLoader(File jarFile, ClassLoader parent) throws IOException {
 		this(jarFile, new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, parent));
 	}

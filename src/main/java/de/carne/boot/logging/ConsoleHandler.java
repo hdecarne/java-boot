@@ -72,6 +72,7 @@ public class ConsoleHandler extends StreamHandler {
 			reportError(null, e, ErrorManager.FORMAT_FAILURE);
 		}
 		if (message != null) {
+			@SuppressWarnings("resource")
 			PrintWriter writer = console.writer();
 
 			try {

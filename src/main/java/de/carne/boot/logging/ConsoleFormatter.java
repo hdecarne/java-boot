@@ -142,7 +142,7 @@ public class ConsoleFormatter extends Formatter {
 			if (this.enableAnsiOutput) {
 				buffer.append(this.exceptionStyle);
 			}
-			thrown.printStackTrace(new PrintWriter(new Writer() {
+			try(PrintWriter bufferWriter = new PrintWriter(new Writer() {
 
 				@Override
 				public void write(@Nullable char[] cbuf, int off, int len) throws IOException {
@@ -159,7 +159,9 @@ public class ConsoleFormatter extends Formatter {
 					// Nothing to do
 				}
 
-			}));
+			})) {
+				thrown.printStackTrace(bufferWriter);
+			}
 			if (this.enableAnsiOutput) {
 				buffer.append(ANSI_RESET);
 			}
