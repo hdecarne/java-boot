@@ -36,7 +36,7 @@ class ConfigTest {
 
 		Assertions.assertFalse(log.isTraceLoggable());
 
-		LoggingTests.logTestMessages(log, 6);
+		LoggingTests.logTestMessagesAndAssert(log, 6);
 
 		// Check for trace settings
 		System.setProperty(Config.class.getName(), "logging-trace.properties");
@@ -45,7 +45,7 @@ class ConfigTest {
 
 		Assertions.assertTrue(log.isTraceLoggable());
 
-		LoggingTests.logTestMessages(log, 12);
+		LoggingTests.logTestMessagesAndAssert(log, 12);
 
 		// Check for (unchanged) trace settings
 		System.setProperty(Config.class.getName(), "logging-unknown.properties");
@@ -54,7 +54,7 @@ class ConfigTest {
 
 		Assertions.assertTrue(log.isTraceLoggable());
 
-		LoggingTests.logTestMessages(log, 12);
+		LoggingTests.logTestMessagesAndAssert(log, 12);
 	}
 
 }

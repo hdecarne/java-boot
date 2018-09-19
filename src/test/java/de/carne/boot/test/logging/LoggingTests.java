@@ -31,7 +31,24 @@ class LoggingTests {
 		// Prevent instantiation
 	}
 
-	static void logTestMessages(Log log, int expectedRecordCount) {
+	static void logTestMessages(Log log) {
+		Exception thrown = new IllegalStateException();
+
+		log.trace("Trace message");
+		log.trace(thrown, "Trace message (with exception)");
+		log.debug("Debug message");
+		log.debug(thrown, "Debug message (with exception)");
+		log.info("Info message");
+		log.info(thrown, "Info message (with exception)");
+		log.warning("Warning message");
+		log.warning(thrown, "Warning message (with exception)");
+		log.error("Error message");
+		log.error(thrown, "Error message (with exception)");
+		log.notice("Notice message");
+		log.notice(thrown, "Notice message (with exception)");
+	}
+
+	static void logTestMessagesAndAssert(Log log, int expectedRecordCount) {
 		LogRecorder recorder = new LogRecorder(LogLevel.LEVEL_TRACE);
 
 		recorder.includeRecord(record -> true);
@@ -39,21 +56,7 @@ class LoggingTests {
 
 		try (LogRecorder.Session session = recorder.start(true)) {
 			session.includeThread(thread -> true);
-
-			Exception thrown = new IllegalStateException();
-
-			log.trace("Trace message");
-			log.trace(thrown, "Trace message (with exception)");
-			log.debug("Debug message");
-			log.debug(thrown, "Debug message (with exception)");
-			log.info("Info message");
-			log.info(thrown, "Info message (with exception)");
-			log.warning("Warning message");
-			log.warning(thrown, "Warning message (with exception)");
-			log.error("Error message");
-			log.error(thrown, "Error message (with exception)");
-			log.notice("Notice message");
-			log.notice(thrown, "Notice message (with exception)");
+			logTestMessages(log);
 			Assertions.assertEquals(expectedRecordCount, session.getRecords().size());
 		}
 	}

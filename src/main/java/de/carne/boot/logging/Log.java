@@ -29,8 +29,7 @@ import de.carne.boot.check.Nullable;
 public final class Log {
 
 	static {
-		// Apply minimal default configuration
-		Logs.initializeLogManager();
+		Logs.initialize();
 	}
 
 	private final Logger logger;

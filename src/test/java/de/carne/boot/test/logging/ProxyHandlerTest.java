@@ -21,37 +21,45 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.carne.boot.logging.LocalizedFilter;
 import de.carne.boot.logging.Log;
-import de.carne.boot.logging.LogBuffer;
 import de.carne.boot.logging.Logs;
 
 /**
- * Test {@linkplain LocalizedFilter} class.
+ * Test {@linkplain de.carne.boot.logging.ProxyHandler} class.
  */
-class LocalizedFilterTest {
+class ProxyHandlerTest {
 
 	@Test
-	void testLocalizedFilter() throws IOException {
-		Logs.readConfig("logging-localized.properties");
+	void testLog4j2Proxy() throws IOException {
+		Logs.readConfig("logging-log4j2proxy.properties");
 
-		Log standardLog = new Log(LogTest.class);
-		Log localizedLog1 = new Log(getClass().getName());
-		Log localizedLog2 = new Log(LogsTest.class, getClass().getName());
-		LogRecordCounter counter = new LogRecordCounter();
+		Log log = new Log();
 
-		LogBuffer.addHandler(standardLog, counter, true);
-		LoggingTests.logTestMessagesAndAssert(localizedLog1, 6);
+		LogEventCounter.resetCounter();
+		LoggingTests.logTestMessages(log);
+		Assertions.assertEquals(10, LogEventCounter.getCounter());
+	}
 
-		Assertions.assertEquals(6, counter.getPublishCount());
+	@Test
+	void testSlf4jProxy() throws IOException {
+		Logs.readConfig("logging-slf4jproxy.properties");
 
-		LoggingTests.logTestMessagesAndAssert(localizedLog2, 6);
+		Log log = new Log();
 
-		Assertions.assertEquals(12, counter.getPublishCount());
+		LogEventCounter.resetCounter();
+		LoggingTests.logTestMessages(log);
+		Assertions.assertEquals(10, LogEventCounter.getCounter());
+	}
 
-		LoggingTests.logTestMessagesAndAssert(standardLog, 6);
+	@Test
+	void testAutoProxy() throws IOException {
+		Logs.readConfig("logging-autoproxy.properties");
 
-		Assertions.assertEquals(12, counter.getPublishCount());
+		Log log = new Log();
+
+		LogEventCounter.resetCounter();
+		LoggingTests.logTestMessages(log);
+		Assertions.assertEquals(10, LogEventCounter.getCounter());
 	}
 
 }

@@ -44,18 +44,18 @@ public final class Logs {
 		// prevent instantiation
 	}
 
-	// Touch our custom level class to make sure the level names are registered
-	static {
-		LogLevel.LEVEL_NOTICE.getName();
-	}
+	/**
+	 * Default {@linkplain ErrorManager} instance to use for error reporting.
+	 */
+	public static final ErrorManager DEFAULT_ERROR_MANAGER = new ErrorManager();
 
 	private static final String CONFIG_BOOT = "logging-boot.properties";
 
-	/**
-	 * Makes sure the {@linkplain LogManager} is configured in a minimal way (unless not specific configuration has
-	 * already been applied).
-	 */
-	public static void initializeLogManager() {
+	static {
+		// Touch our custom level class to make sure the level names are registered
+		LogLevel.LEVEL_NOTICE.getName();
+		// Makes sure the {@linkplain LogManager} is configured in a minimal way (unless not specific configuration has
+		// already been applied).
 		if (System.getProperty("java.util.logging.config.class") == null
 				&& System.getProperty("java.util.logging.config.file") == null) {
 			File userConfig = new File(new File(System.getProperty("java.home"), "lib"), "logging.properites");
@@ -69,6 +69,10 @@ public final class Logs {
 				}
 			}
 		}
+	}
+
+	static void initialize() {
+		// Nothing to do here; loading this class is sufficient
 	}
 
 	/**
@@ -92,11 +96,6 @@ public final class Logs {
 			}
 		}
 	}
-
-	/**
-	 * Default {@linkplain ErrorManager} instance to use for error reporting.
-	 */
-	public static final ErrorManager DEFAULT_ERROR_MANAGER = new ErrorManager();
 
 	/**
 	 * Standard name for default logging config.
@@ -137,6 +136,7 @@ public final class Logs {
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private static InputStream openConfig(String config) throws FileNotFoundException {
 		InputStream configInputStream;
 
