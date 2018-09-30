@@ -33,6 +33,11 @@ repositories {
 	maven { url "https://oss.jfrog.org/libs-release/" }
 }
 
+// We don't use Log4j2 annotation processing
+tasks.withType(JavaCompile) {
+	options.compilerArgs += ["-proc:none"]
+}
+
 jar {
 	manifest {
 		attributes "Automatic-Module-Name": automaticModuleName
@@ -57,7 +62,7 @@ test {
 }
 
 jacoco {
-	toolVersion = "0.8.1"
+	toolVersion = "0.8.2"
 }
 
 jacocoTestReport {
