@@ -11,7 +11,10 @@ jdk:
 
 os:
   - linux
-  
+
+git:
+  depth: false  
+
 script:
   - ./gradlew --stacktrace build artifactoryPublish sonarqube
 
