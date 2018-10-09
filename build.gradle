@@ -45,8 +45,7 @@ jar {
 }
 
 dependencies {
-	implementation(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: "2.2.100")
-	configurations.runtime.exclude(group: "org.eclipse.jdt", module: "org.eclipse.jdt.annotation")
+	api(group: "org.eclipse.jdt", name: "org.eclipse.jdt.annotation", version: "2.2.100")
 
 	compileOnly(group: "org.slf4j", name: "slf4j-api", version: "1.7.25")
 	compileOnly(group: "org.apache.logging.log4j", name: "log4j-api", version: "2.11.1")
