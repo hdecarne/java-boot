@@ -18,6 +18,7 @@ package de.carne.boot.check;
 
 import java.text.MessageFormat;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -37,6 +38,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
+	@NonNull
 	public static <T> T notNull(@Nullable T object) {
 		if (object == null) {
 			throw new NullPointerException();
@@ -56,6 +58,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
+	@NonNull
 	public static <T> T notNull(@Nullable T object, String pattern, Object... arguments) {
 		if (object == null) {
 			throw new NullPointerException(formatMessage(pattern, arguments));
