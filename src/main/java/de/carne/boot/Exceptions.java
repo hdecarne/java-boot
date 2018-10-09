@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.logging.Log;
 
 /**

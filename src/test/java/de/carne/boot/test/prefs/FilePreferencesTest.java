@@ -26,13 +26,13 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 import de.carne.boot.prefs.FilePreferencesFactory;
 
 /**

@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * This class is used to record {@linkplain LogRecord}s in a selective manner (e.g. to display detailed results of long
@@ -46,7 +46,7 @@ public final class LogRecorder {
 	 * Construct {@linkplain LogRecorder}.
 	 *
 	 * @param level The {@linkplain Level} to use for {@linkplain LogRecord} filtering (all {@linkplain LogRecord}s
-	 *        below this level are ignored).
+	 * below this level are ignored).
 	 */
 	public LogRecorder(Level level) {
 		excludeRecord(record -> record.getLevel().intValue() < level.intValue());
@@ -110,7 +110,7 @@ public final class LogRecorder {
 	 * until the {@linkplain Session}'s {@linkplain Session#close()} method is called.
 	 *
 	 * @param currentThreadOnly Whether to include only {@linkplain LogRecord}s issued by the current
-	 *        {@linkplain Thread}.
+	 * {@linkplain Thread}.
 	 * @return The started {@linkplain Session}.
 	 */
 	public Session start(boolean currentThreadOnly) {

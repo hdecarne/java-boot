@@ -36,8 +36,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.Exceptions;
-import de.carne.boot.check.Nullable;
 
 /**
  * File based store.

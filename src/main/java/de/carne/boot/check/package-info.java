@@ -16,3 +16,5 @@
  */
 @NonNullByDefault
 package de.carne.boot.check;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;

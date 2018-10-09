@@ -30,8 +30,9 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.ShutdownHooks;
-import de.carne.boot.check.Nullable;
 import de.carne.boot.logging.Log;
 
 /**

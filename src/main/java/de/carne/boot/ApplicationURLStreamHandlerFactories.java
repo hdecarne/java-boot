@@ -22,7 +22,7 @@ import java.net.URLStreamHandlerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * {@linkplain URLStreamHandlerFactory} implementation that supports multiple protocol handlers per VM by multiplexing
@@ -50,7 +50,7 @@ public final class ApplicationURLStreamHandlerFactories implements URLStreamHand
 	 * @param protocol the protocol to register.
 	 * @param factory the {@linkplain URLStreamHandlerFactory} handling the submitted protocol.
 	 * @return the previously registered {@linkplain URLStreamHandlerFactory} or {@code null} if the submitted protocol
-	 *         is registered for the first time.
+	 * is registered for the first time.
 	 */
 	public static URLStreamHandlerFactory register(String protocol, URLStreamHandlerFactory factory) {
 		return THIS.register0(protocol, factory);

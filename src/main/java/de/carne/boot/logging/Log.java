@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Wrapper class for the JDK's {@linkplain Logger} class to make logging easy and efficient.

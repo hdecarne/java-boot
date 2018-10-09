@@ -19,8 +19,9 @@ package de.carne.boot.prefs;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.check.Check;
-import de.carne.boot.check.Nullable;
 
 /**
  * {@linkplain java.util.prefs.Preferences} implementation backed up by a single text configuration files.

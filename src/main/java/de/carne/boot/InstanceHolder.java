@@ -18,7 +18,7 @@ package de.carne.boot;
 
 import java.util.function.Supplier;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Helper class used for management of the singleton instances.
@@ -35,11 +35,12 @@ final class InstanceHolder<I> implements Supplier<I> {
 			throw new ApplicationInitializationException("Instance holder already initialized");
 		}
 		this.instance = instance;
-		return this.instance;
+		return instance;
 	}
 
 	@Override
 	public I get() {
+		@Nullable
 		I checkedInstance = this.instance;
 
 		if (checkedInstance == null) {

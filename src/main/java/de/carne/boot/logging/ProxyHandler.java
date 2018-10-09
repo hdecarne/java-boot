@@ -22,15 +22,15 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.logging.proxy.AutoProxy;
 import de.carne.boot.logging.proxy.Log4j2Proxy;
 import de.carne.boot.logging.proxy.Proxy;
 import de.carne.boot.logging.proxy.Slf4jProxy;
 
 /**
- * A {@linkplain Handler} implementation used to forward log records to a 3rd
- * party logging framework.
+ * A {@linkplain Handler} implementation used to forward log records to a 3rd party logging framework.
  */
 public class ProxyHandler extends Handler {
 
@@ -45,8 +45,7 @@ public class ProxyHandler extends Handler {
 		AUTO(AutoProxy.class),
 
 		/**
-		 * Log4j 2 (<a href=
-		 * "https://logging.apache.org/log4j/2.x/">https://logging.apache.org/log4j/2.x/</a>).
+		 * Log4j 2 (<a href= "https://logging.apache.org/log4j/2.x/">https://logging.apache.org/log4j/2.x/</a>).
 		 */
 		LOG4J2(Log4j2Proxy.class),
 

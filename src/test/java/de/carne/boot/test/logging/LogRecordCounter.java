@@ -19,7 +19,7 @@ package de.carne.boot.test.logging;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Test helper class used for log message counting.

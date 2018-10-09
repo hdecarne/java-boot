@@ -24,7 +24,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Generic main class responsible for bootstrapping of the actual application. This also includes the proper setup of

@@ -26,7 +26,7 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 final class ApplicationJarURLStreamHandlerFactory implements URLStreamHandlerFactory {
 

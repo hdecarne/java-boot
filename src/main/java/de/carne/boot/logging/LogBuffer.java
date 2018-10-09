@@ -30,7 +30,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * {@linkplain Handler} implementation used to add/remove {@linkplain Handler} instances programmatically during
@@ -179,6 +179,7 @@ public class LogBuffer extends Handler {
 	 */
 	@Nullable
 	public synchronized <T extends Handler> T getHandler(Class<T> handlerType) {
+		@Nullable
 		T found = null;
 
 		for (Handler handler : this.handlers) {

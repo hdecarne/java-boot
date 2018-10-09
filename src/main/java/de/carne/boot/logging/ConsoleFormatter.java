@@ -28,7 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.boot.platform.Platform;
 
 /**
@@ -142,10 +143,10 @@ public class ConsoleFormatter extends Formatter {
 			if (this.enableAnsiOutput) {
 				buffer.append(this.exceptionStyle);
 			}
-			try(PrintWriter bufferWriter = new PrintWriter(new Writer() {
+			try (PrintWriter bufferWriter = new PrintWriter(new Writer() {
 
 				@Override
-				public void write(@Nullable char[] cbuf, int off, int len) throws IOException {
+				public void write(char @Nullable [] cbuf, int off, int len) throws IOException {
 					buffer.append(cbuf, off, len);
 				}
 

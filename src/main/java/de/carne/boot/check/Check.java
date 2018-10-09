@@ -18,6 +18,8 @@ package de.carne.boot.check;
 
 import java.text.MessageFormat;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Utility class providing code check related functions.
  */

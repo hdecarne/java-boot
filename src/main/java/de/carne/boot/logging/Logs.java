@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import de.carne.boot.check.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class providing {@linkplain Log} related functions.
@@ -119,8 +119,10 @@ public final class Logs {
 	 * @throws IOException if an I/O error occurs while reading the configuration.
 	 */
 	public static void readConfig(String config) throws IOException {
+		LogManager manager = LogManager.getLogManager();
+
 		try (InputStream configInputStream = openConfig(config)) {
-			LogManager.getLogManager().readConfiguration(configInputStream);
+			manager.readConfiguration(configInputStream);
 		}
 	}
 
@@ -131,8 +133,10 @@ public final class Logs {
 	 * @throws IOException if an I/O error occurs while reading the configuration.
 	 */
 	public static void readConfig(URL config) throws IOException {
+		LogManager manager = LogManager.getLogManager();
+
 		try (InputStream configInputStream = config.openStream()) {
-			LogManager.getLogManager().readConfiguration(configInputStream);
+			manager.readConfiguration(configInputStream);
 		}
 	}
 
