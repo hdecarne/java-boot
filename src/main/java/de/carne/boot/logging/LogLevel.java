@@ -59,4 +59,30 @@ public class LogLevel extends Level {
 		super(name, levelValue);
 	}
 
+	/**
+	 * Gets the {@linkplain LogLevel} corresponding to a {@linkplain Level} instance.
+	 *
+	 * @param level the {@linkplain Level} instance to map.
+	 * @return the {@linkplain LogLevel} corresponding to a {@linkplain Level} instance.
+	 */
+	public static LogLevel fromLevel(Level level) {
+		int levelValue = level.intValue();
+		LogLevel logLevel;
+
+		if (levelValue <= LogLevel.LEVEL_TRACE.intValue()) {
+			logLevel = LogLevel.LEVEL_TRACE;
+		} else if (levelValue <= LogLevel.LEVEL_DEBUG.intValue()) {
+			logLevel = LogLevel.LEVEL_DEBUG;
+		} else if (levelValue <= LogLevel.LEVEL_INFO.intValue()) {
+			logLevel = LogLevel.LEVEL_INFO;
+		} else if (levelValue <= LogLevel.LEVEL_WARNING.intValue()) {
+			logLevel = LogLevel.LEVEL_WARNING;
+		} else if (levelValue <= LogLevel.LEVEL_ERROR.intValue()) {
+			logLevel = LogLevel.LEVEL_ERROR;
+		} else {
+			logLevel = LogLevel.LEVEL_NOTICE;
+		}
+		return logLevel;
+	}
+
 }

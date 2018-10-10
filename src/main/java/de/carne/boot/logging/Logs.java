@@ -22,9 +22,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.logging.ErrorManager;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
@@ -124,6 +127,7 @@ public final class Logs {
 		try (InputStream configInputStream = openConfig(config)) {
 			manager.readConfiguration(configInputStream);
 		}
+		applyApplicationConfig(manager);
 	}
 
 	/**
@@ -138,6 +142,7 @@ public final class Logs {
 		try (InputStream configInputStream = config.openStream()) {
 			manager.readConfiguration(configInputStream);
 		}
+		applyApplicationConfig(manager);
 	}
 
 	@SuppressWarnings("resource")
@@ -158,6 +163,25 @@ public final class Logs {
 		return configInputStream;
 	}
 
+	private static void applyApplicationConfig(LogManager manager) {
+		Logger rootLogger = manager.getLogger("");
+		LogLevel rootLoggerLevel = LogLevel.fromLevel(rootLogger.getLevel());
+		String[] handlerNames = getStringsProperty(manager, "application.handlers");
+
+		for (String handlerName : handlerNames) {
+			try {
+				Handler handler = newClassInstance(handlerName, Handler.class);
+				Level level = getLevelProperty(manager, "application." + handlerName + ".info", rootLoggerLevel);
+
+				handler.setLevel(level);
+				rootLogger.addHandler(handler);
+			} catch (ReflectiveOperationException e) {
+				Logs.DEFAULT_ERROR_MANAGER.error("Unable to instantiate handler: " + handlerName, e,
+						ErrorManager.GENERIC_FAILURE);
+			}
+		}
+	}
+
 	/**
 	 * Gets a {@code String} property from a {@linkplain LogManager}'s current configuration.
 	 *
@@ -170,6 +194,31 @@ public final class Logs {
 		String property = manager.getProperty(name);
 
 		return (property != null ? property : defaultValue);
+	}
+
+	/**
+	 * Gets a {@code String} array property from a {@linkplain LogManager}'s current configuration.
+	 *
+	 * @param manager the {@linkplain LogManager} to get the configuration from.
+	 * @param name the property name to evaluate.
+	 * @return the defined value or the default value if the property is undefined.
+	 */
+	public static String[] getStringsProperty(LogManager manager, String name) {
+		String property = manager.getProperty(name);
+		List<String> propertyValue = new ArrayList<>();
+
+		if (property != null) {
+			StringTokenizer propertyTokens = new StringTokenizer(property, " ,");
+
+			while (propertyTokens.hasMoreElements()) {
+				String propertyToken = propertyTokens.nextToken().trim();
+
+				if (propertyToken.length() > 0) {
+					propertyValue.add(propertyToken);
+				}
+			}
+		}
+		return propertyValue.toArray(new String[propertyValue.size()]);
 	}
 
 	/**
@@ -249,9 +298,8 @@ public final class Logs {
 
 		if (property != null) {
 			try {
-				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
-						.asSubclass(Filter.class).getConstructor().newInstance();
-			} catch (Exception e) {
+				propertyValue = newClassInstance(property, Filter.class);
+			} catch (ReflectiveOperationException e) {
 				Logs.DEFAULT_ERROR_MANAGER.error("Invalid filter property: " + name, e, ErrorManager.GENERIC_FAILURE);
 			}
 		}
@@ -272,14 +320,22 @@ public final class Logs {
 
 		if (property != null) {
 			try {
-				propertyValue = Thread.currentThread().getContextClassLoader().loadClass(property.trim())
-						.asSubclass(Formatter.class).getConstructor().newInstance();
-			} catch (Exception e) {
+				propertyValue = newClassInstance(property, Formatter.class);
+			} catch (ReflectiveOperationException e) {
 				Logs.DEFAULT_ERROR_MANAGER.error("Invalid formatter property: " + name, e,
 						ErrorManager.GENERIC_FAILURE);
 			}
 		}
 		return propertyValue;
+	}
+
+	private static <T> T newClassInstance(String name, Class<T> type) throws ReflectiveOperationException {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+		if (classLoader == null) {
+			classLoader = Logs.class.getClassLoader();
+		}
+		return Class.forName(name, false, classLoader).asSubclass(type).getConstructor().newInstance();
 	}
 
 }

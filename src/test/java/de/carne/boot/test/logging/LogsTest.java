@@ -19,6 +19,7 @@ package de.carne.boot.test.logging;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import de.carne.boot.logging.Config;
 import de.carne.boot.logging.LocalizedFilter;
 import de.carne.boot.logging.Log;
+import de.carne.boot.logging.LogBuffer;
 import de.carne.boot.logging.LogLevel;
 import de.carne.boot.logging.Logs;
 
@@ -83,6 +85,13 @@ class LogsTest {
 		Assertions.assertThrows(FileNotFoundException.class, () -> {
 			Logs.readConfig("logging-unknown.properties");
 		});
+	}
+
+	@Test
+	void testApplicationConfig() throws IOException {
+		Logs.readConfig("logging-application.properties");
+
+		Assertions.assertNotNull(LogBuffer.get(Logger.getLogger("")));
 	}
 
 	@Test
