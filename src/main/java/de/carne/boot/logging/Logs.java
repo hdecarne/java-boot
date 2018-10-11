@@ -171,7 +171,7 @@ public final class Logs {
 		for (String handlerName : handlerNames) {
 			try {
 				Handler handler = newClassInstance(handlerName, Handler.class);
-				Level level = getLevelProperty(manager, "application." + handlerName + ".info", rootLoggerLevel);
+				Level level = getLevelProperty(manager, handlerName + ".level", rootLoggerLevel);
 
 				handler.setLevel(level);
 				rootLogger.addHandler(handler);
