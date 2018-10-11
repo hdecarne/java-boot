@@ -38,8 +38,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	@NonNull
-	public static <T> T notNull(@Nullable T object) {
+	public static <@NonNull T> T notNull(@Nullable T object) {
 		if (object == null) {
 			throw new NullPointerException();
 		}
@@ -58,8 +57,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
-	@NonNull
-	public static <T> T notNull(@Nullable T object, String pattern, Object... arguments) {
+	public static <@NonNull T> T notNull(@Nullable T object, String pattern, Object... arguments) {
 		if (object == null) {
 			throw new NullPointerException(formatMessage(pattern, arguments));
 		}
@@ -75,7 +73,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <T> T isInstanceOf(Object object, Class<T> type) {
+	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException();
 		}
@@ -95,7 +93,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
+	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException(formatMessage(pattern, arguments));
 		}
