@@ -29,21 +29,6 @@ class CheckTest {
 	private static final String MESSAGE_PATTERN = "Check failed: {0}";
 
 	@Test
-	void testCheckNotNull() {
-		Assertions.assertNotNull(Check.notNull(this));
-		Assertions.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
-		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.notNull(null);
-		});
-		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.notNull(null, getClass().getSimpleName());
-		});
-		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.notNull(null, MESSAGE_PATTERN, getClass().getSimpleName());
-		});
-	}
-
-	@Test
 	void testCheckIsInstance() {
 		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class));
 		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class, getClass().getSimpleName()));

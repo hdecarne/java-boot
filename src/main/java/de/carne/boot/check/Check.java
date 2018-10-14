@@ -19,7 +19,6 @@ package de.carne.boot.check;
 import java.text.MessageFormat;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class providing code check related functions.
@@ -31,40 +30,6 @@ public final class Check {
 	}
 
 	/**
-	 * Checks and ensures that an {@linkplain Object} is not {@code null}.
-	 *
-	 * @param <T> the actual object type.
-	 * @param object the {@linkplain Object} to check.
-	 * @return the checked {@linkplain Object} (never {@code null}).
-	 * @throws NullPointerException if the submitted argument is {@code null}.
-	 */
-	public static <@NonNull T> T notNull(@Nullable T object) {
-		if (object == null) {
-			throw new NullPointerException();
-		}
-		return object;
-	}
-
-	/**
-	 * Checks and ensures that an {@linkplain Object} is not {@code null}.
-	 * <p>
-	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
-	 *
-	 * @param <T> the actual object type.
-	 * @param object the {@linkplain Object} to check.
-	 * @param pattern the exception message pattern to use in case the check fails.
-	 * @param arguments the exception message arguments to use in case the check fails.
-	 * @return the checked {@linkplain Object} (never {@code null}).
-	 * @throws NullPointerException if the submitted argument is {@code null}.
-	 */
-	public static <@NonNull T> T notNull(@Nullable T object, String pattern, Object... arguments) {
-		if (object == null) {
-			throw new NullPointerException(formatMessage(pattern, arguments));
-		}
-		return object;
-	}
-
-	/**
 	 * Checks and ensures that an {@linkplain Object} is an instance of a specific type.
 	 *
 	 * @param <T> the type to ensure.
@@ -73,6 +38,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
+	@SuppressWarnings("null")
 	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException();
@@ -93,6 +59,7 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
+	@SuppressWarnings("null")
 	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException(formatMessage(pattern, arguments));
@@ -163,6 +130,7 @@ public final class Check {
 		throw new IllegalStateException("Unexpected " + object.getClass().getName() + ": " + object);
 	}
 
+	@SuppressWarnings("null")
 	private static String formatMessage(String pattern, Object... arguments) {
 		return (arguments.length > 0 ? MessageFormat.format(pattern, arguments) : pattern);
 	}

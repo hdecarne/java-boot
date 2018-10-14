@@ -24,6 +24,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -100,7 +101,7 @@ public final class Application {
 			debug("Using application configuration: %1$s", configName);
 		}
 
-		Enumeration<URL> configUrls;
+		Enumeration<@NonNull URL> configUrls;
 
 		try {
 			configUrls = applicationClassLoader.getResources(configName);

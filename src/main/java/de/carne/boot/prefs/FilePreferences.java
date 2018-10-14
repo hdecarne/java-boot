@@ -16,6 +16,7 @@
  */
 package de.carne.boot.prefs;
 
+import java.util.Objects;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
@@ -41,19 +42,19 @@ class FilePreferences extends AbstractPreferences {
 	}
 
 	@Override
-	protected void putSpi(@Nullable String key, @Nullable String value) {
-		this.store.put(this, Check.notNull(key), Check.notNull(value));
+	protected void putSpi(String key, String value) {
+		this.store.put(this, key, value);
 	}
 
 	@Override
 	@Nullable
-	protected String getSpi(@Nullable String key) {
-		return this.store.get(this, Check.notNull(key));
+	protected String getSpi(String key) {
+		return this.store.get(this, key);
 	}
 
 	@Override
-	protected void removeSpi(@Nullable String key) {
-		this.store.remove(this, Check.notNull(key));
+	protected void removeSpi(String key) {
+		this.store.remove(this, key);
 	}
 
 	@Override
@@ -73,7 +74,7 @@ class FilePreferences extends AbstractPreferences {
 
 	@Override
 	protected AbstractPreferences childSpi(@Nullable String name) {
-		return this.store.child(this, Check.notNull(name));
+		return this.store.child(this, Objects.requireNonNull(name));
 	}
 
 	@Override
