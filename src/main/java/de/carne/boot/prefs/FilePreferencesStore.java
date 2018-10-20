@@ -101,6 +101,7 @@ abstract class FilePreferencesStore {
 		recordChange(data -> data.remove(preferencesKey));
 	}
 
+	@SuppressWarnings("null")
 	public synchronized void removeNode(FilePreferences preferences) {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
 
@@ -115,6 +116,7 @@ abstract class FilePreferencesStore {
 		});
 	}
 
+	@SuppressWarnings("null")
 	public synchronized String[] keys(FilePreferences preferences) {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
 		Set<String> keys = getCachedData().keySet().stream().map(Object::toString)
@@ -124,6 +126,7 @@ abstract class FilePreferencesStore {
 		return keys.toArray(new String[keys.size()]);
 	}
 
+	@SuppressWarnings("null")
 	public synchronized String[] childrenNames(FilePreferences preferences) {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
 		Set<String> childrenNames = getCachedData().keySet().stream().map(Object::toString)

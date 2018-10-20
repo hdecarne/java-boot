@@ -114,7 +114,7 @@ class FileStore extends FilePreferencesStore {
 			attributes.add(PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ,
 					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE)));
 		}
-		return attributes.toArray(new FileAttribute<?>[attributes.size()]);
+		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
 
 }

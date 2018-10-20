@@ -38,7 +38,6 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	@SuppressWarnings("null")
 	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException();
@@ -59,7 +58,6 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	@SuppressWarnings("null")
 	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException(formatMessage(pattern, arguments));
