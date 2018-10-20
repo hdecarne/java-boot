@@ -52,10 +52,12 @@ public final class ApplicationURLStreamHandlerFactories implements URLStreamHand
 	 * @return the previously registered {@linkplain URLStreamHandlerFactory} or {@code null} if the submitted protocol
 	 * is registered for the first time.
 	 */
+	@Nullable
 	public static URLStreamHandlerFactory register(String protocol, URLStreamHandlerFactory factory) {
 		return THIS.register0(protocol, factory);
 	}
 
+	@Nullable
 	private synchronized URLStreamHandlerFactory register0(String protocol, URLStreamHandlerFactory factory) {
 		return this.factoryMap.put(protocol, factory);
 	}

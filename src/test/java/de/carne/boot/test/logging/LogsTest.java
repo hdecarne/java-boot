@@ -18,6 +18,7 @@ package de.carne.boot.test.logging;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -74,7 +75,7 @@ class LogsTest {
 		Logs.readConfig("logging-trace.properties");
 		Assertions.assertTrue(log.isTraceLoggable());
 		LoggingTests.logTestMessagesAndAssert(log, 12);
-		Logs.readConfig(getClass().getResource("/logging-warning.properties"));
+		Logs.readConfig(Objects.requireNonNull(getClass().getResource("/logging-warning.properties")));
 		Assertions.assertTrue(log.isWarningLoggable());
 		Assertions.assertFalse(log.isInfoLoggable());
 		LoggingTests.logTestMessagesAndAssert(log, 6);

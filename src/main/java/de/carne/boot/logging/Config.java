@@ -19,6 +19,8 @@ package de.carne.boot.logging;
 import java.io.IOException;
 import java.util.logging.ErrorManager;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * Helper class used to apply the default logging during {@linkplain java.util.logging.LogManager} initialization.
  * <p>
@@ -31,6 +33,8 @@ public final class Config {
 	 * Constructs a {@linkplain Config} instance and applies default logging configuration.
 	 */
 	public Config() {
+		@SuppressWarnings("null")
+		@NonNull
 		String config = System.getProperty(getClass().getName(), Logs.CONFIG_DEFAULT);
 
 		try {

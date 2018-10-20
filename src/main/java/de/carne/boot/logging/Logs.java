@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -87,6 +88,7 @@ public final class Logs {
 		Set<Handler> handlers = new HashSet<>();
 
 		while (loggerNames.hasMoreElements()) {
+			@SuppressWarnings("null")
 			String loggerName = loggerNames.nextElement();
 			Logger logger = manager.getLogger(loggerName);
 
@@ -165,13 +167,20 @@ public final class Logs {
 
 	private static void applyApplicationConfig(LogManager manager) {
 		Logger rootLogger = manager.getLogger("");
-		LogLevel rootLoggerLevel = LogLevel.fromLevel(rootLogger.getLevel());
+		Level rootLoggerLevel = rootLogger.getLevel();
+
+		if (rootLoggerLevel == null) {
+			rootLoggerLevel = Level.INFO;
+		}
+
+		LogLevel rootLoggerLogLevel = LogLevel.fromLevel(rootLoggerLevel);
+		@NonNull
 		String[] handlerNames = getStringsProperty(manager, "application.handlers");
 
 		for (String handlerName : handlerNames) {
 			try {
 				Handler handler = newClassInstance(handlerName, Handler.class);
-				Level level = getLevelProperty(manager, handlerName + ".level", rootLoggerLevel);
+				Level level = getLevelProperty(manager, handlerName + ".level", rootLoggerLogLevel);
 
 				handler.setLevel(level);
 				rootLogger.addHandler(handler);
@@ -203,7 +212,7 @@ public final class Logs {
 	 * @param name the property name to evaluate.
 	 * @return the defined value or the default value if the property is undefined.
 	 */
-	public static String[] getStringsProperty(LogManager manager, String name) {
+	public static @NonNull String[] getStringsProperty(LogManager manager, String name) {
 		String property = manager.getProperty(name);
 		List<String> propertyValue = new ArrayList<>();
 
@@ -218,7 +227,7 @@ public final class Logs {
 				}
 			}
 		}
-		return propertyValue.toArray(new String[propertyValue.size()]);
+		return propertyValue.toArray(new @Nullable String[propertyValue.size()]);
 	}
 
 	/**

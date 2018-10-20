@@ -16,6 +16,8 @@
  */
 package de.carne.boot.platform;
 
+import java.util.Objects;
+
 /**
  * Utility class providing functions to determine Java platform type and capabilities.
  */
@@ -28,17 +30,17 @@ public final class Platform {
 	/**
 	 * System property: {@code "os.arch"}
 	 */
-	public static final String SYSTEM_OS_ARCH = System.getProperty("os.arch");
+	public static final String SYSTEM_OS_ARCH = Objects.requireNonNull(System.getProperty("os.arch"));
 
 	/**
 	 * System property: {@code "os.name"}
 	 */
-	public static final String SYSTEM_OS_NAME = System.getProperty("os.name");
+	public static final String SYSTEM_OS_NAME = Objects.requireNonNull(System.getProperty("os.name"));
 
 	/**
 	 * System property: {@code "os.version"}
 	 */
-	public static final String SYSTEM_OS_VERSION = System.getProperty("os.version");
+	public static final String SYSTEM_OS_VERSION = Objects.requireNonNull(System.getProperty("os.version"));
 
 	/**
 	 * Operating System: Linux

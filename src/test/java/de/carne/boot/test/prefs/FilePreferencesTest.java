@@ -108,7 +108,7 @@ class FilePreferencesTest {
 		userPrefs1.flush();
 		verifyPrefs(referencePrefs, userPrefs1);
 
-		Preferences userPrefs2 = Preferences.userRoot();
+		Preferences userPrefs2 = Objects.requireNonNull(Preferences.userRoot());
 
 		verifyPrefs(referencePrefs, userPrefs2);
 
@@ -134,7 +134,7 @@ class FilePreferencesTest {
 		systemPrefs1.flush();
 		verifyPrefs(referencePrefs, systemPrefs1);
 
-		Preferences systemPrefs2 = Preferences.userRoot();
+		Preferences systemPrefs2 = Objects.requireNonNull(Preferences.userRoot());
 
 		verifyPrefs(referencePrefs, systemPrefs2);
 
@@ -158,8 +158,8 @@ class FilePreferencesTest {
 			to.put(key, from.get(key, null));
 		}
 		for (String childrenName : from.childrenNames()) {
-			Preferences subFrom = from.node(childrenName);
-			Preferences subTo = to.node(childrenName);
+			Preferences subFrom = Objects.requireNonNull(from.node(childrenName));
+			Preferences subTo = Objects.requireNonNull(to.node(childrenName));
 
 			copyPrefs(subFrom, subTo);
 		}
@@ -172,8 +172,8 @@ class FilePreferencesTest {
 		}
 		Assertions.assertEquals(expected.childrenNames().length, actual.childrenNames().length);
 		for (String childrenName : expected.childrenNames()) {
-			Preferences subExpected = expected.node(childrenName);
-			Preferences subActual = actual.node(childrenName);
+			Preferences subExpected = Objects.requireNonNull(expected.node(childrenName));
+			Preferences subActual = Objects.requireNonNull(actual.node(childrenName));
 
 			verifyPrefs(subExpected, subActual);
 		}

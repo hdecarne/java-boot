@@ -17,6 +17,7 @@
 package de.carne.boot.logging;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -306,7 +307,7 @@ public final class Log {
 
 	@Override
 	public String toString() {
-		return this.logger.getName();
+		return Objects.toString(this.logger.getName());
 	}
 
 }

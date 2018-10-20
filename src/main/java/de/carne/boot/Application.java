@@ -23,8 +23,8 @@ import java.io.InputStreamReader;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Objects;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -101,7 +101,7 @@ public final class Application {
 			debug("Using application configuration: %1$s", configName);
 		}
 
-		Enumeration<@NonNull URL> configUrls;
+		Enumeration<URL> configUrls;
 
 		try {
 			configUrls = applicationClassLoader.getResources(configName);
@@ -114,6 +114,7 @@ public final class Application {
 					error(null, "Failed to locate application configuration: %1$s", configName));
 		}
 
+		@SuppressWarnings("null")
 		URL configUrl = configUrls.nextElement();
 
 		if (configUrls.hasMoreElements()) {
@@ -121,8 +122,10 @@ public final class Application {
 
 			configUrlsString.append(configUrl.toExternalForm());
 			do {
-				configUrlsString.append(System.lineSeparator()).append('\t')
-						.append(configUrls.nextElement().toExternalForm());
+				@SuppressWarnings("null")
+				URL extraConfigUrl = configUrls.nextElement();
+
+				configUrlsString.append(System.lineSeparator()).append('\t').append(extraConfigUrl.toExternalForm());
 			} while (configUrls.hasMoreElements());
 			throw new ApplicationInitializationException(
 					error(null, "Found multiple application configurations: %1$s", configUrlsString));
@@ -219,6 +222,13 @@ public final class Application {
 
 		String codeLocationProtocol = codeLocation.getProtocol();
 		ClassLoader bootstrapClassLoader = Thread.currentThread().getContextClassLoader();
+
+		if (bootstrapClassLoader == null) {
+			bootstrapClassLoader = Application.class.getClassLoader();
+		}
+
+		Objects.requireNonNull(bootstrapClassLoader);
+
 		ApplicationJarClassLoader applicationClassLoader = null;
 
 		if ("jar".equals(codeLocationProtocol)) {
