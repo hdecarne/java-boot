@@ -55,8 +55,7 @@ final class ApplicationJarURLStreamHandlerFactory implements URLStreamHandlerFac
 		return new URLStreamHandler() {
 
 			@Override
-			@Nullable
-			protected URLConnection openConnection(@Nullable URL u) throws IOException {
+			protected @Nullable URLConnection openConnection(@Nullable URL u) throws IOException {
 				return (u != null ? new URLConnection(u) {
 
 					@Override

@@ -27,8 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 final class InstanceHolder<I> implements Supplier<I> {
 
-	@Nullable
-	private I instance = null;
+	private @Nullable I instance = null;
 
 	public I set(I instance) {
 		if (this.instance != null) {
@@ -40,8 +39,7 @@ final class InstanceHolder<I> implements Supplier<I> {
 
 	@Override
 	public I get() {
-		@Nullable
-		I checkedInstance = this.instance;
+		@Nullable I checkedInstance = this.instance;
 
 		if (checkedInstance == null) {
 			throw new ApplicationInitializationException("Instance holder not yet initialized");

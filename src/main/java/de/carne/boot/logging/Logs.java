@@ -300,8 +300,7 @@ public final class Logs {
 	 * @param defaultValue the the default value to return in case the property is undefined.
 	 * @return the defined value or the default value if the property is undefined.
 	 */
-	@Nullable
-	public static Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
+	public static @Nullable Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
 		String property = manager.getProperty(name);
 		Filter propertyValue = defaultValue;
 

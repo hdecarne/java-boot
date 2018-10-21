@@ -44,8 +44,7 @@ abstract class FilePreferencesStore {
 
 	private static final Set<FileStore> FILE_STORES = new HashSet<>();
 
-	@Nullable
-	private Properties cachedData = null;
+	private @Nullable Properties cachedData = null;
 
 	private List<Consumer<Properties>> changeLog = new LinkedList<>();
 
@@ -88,8 +87,7 @@ abstract class FilePreferencesStore {
 		recordChange(data -> data.put(preferencesKey, value));
 	}
 
-	@Nullable
-	public synchronized String get(FilePreferences preferences, String key) {
+	public synchronized @Nullable String get(FilePreferences preferences, String key) {
 		String preferencesKey = getPreferencesKey(preferences, key);
 
 		return getCachedData().getProperty(preferencesKey);

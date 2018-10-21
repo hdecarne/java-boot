@@ -40,8 +40,7 @@ public class FilePreferencesFactory implements PreferencesFactory {
 
 	private static final String PROPERTY_STORE_HOME = FilePreferences.class.getName();
 
-	@Nullable
-	private static final String STORE_HOME = System.getProperty(PROPERTY_STORE_HOME);
+	private static final @Nullable String STORE_HOME = System.getProperty(PROPERTY_STORE_HOME);
 
 	@Override
 	public Preferences systemRoot() {

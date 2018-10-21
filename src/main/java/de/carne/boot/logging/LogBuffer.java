@@ -63,8 +63,7 @@ public class LogBuffer extends Handler {
 	 * @param log the {@linkplain Log} to get the {@linkplain LogBuffer} for.
 	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
-	@Nullable
-	public static LogBuffer get(Log log) {
+	public static @Nullable LogBuffer get(Log log) {
 		return get(log.logger());
 	}
 
@@ -74,8 +73,7 @@ public class LogBuffer extends Handler {
 	 * @param logger the {@linkplain Logger} to get the {@linkplain LogBuffer} for.
 	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
-	@Nullable
-	public static LogBuffer get(Logger logger) {
+	public static @Nullable LogBuffer get(Logger logger) {
 		LogBuffer logBuffer = null;
 		Logger currentLogger = logger;
 
@@ -149,8 +147,7 @@ public class LogBuffer extends Handler {
 	 * @param handlerType the type of {@linkplain Handler} to get.
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
-	@Nullable
-	public static <T extends Handler> T getHandler(Log log, Class<T> handlerType) {
+	public static <T extends Handler> @Nullable T getHandler(Log log, Class<T> handlerType) {
 		return getHandler(log.logger(), handlerType);
 	}
 
@@ -163,8 +160,7 @@ public class LogBuffer extends Handler {
 	 * @param handlerType the type of {@linkplain Handler} to get.
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
-	@Nullable
-	public static <T extends Handler> T getHandler(Logger logger, Class<T> handlerType) {
+	public static <T extends Handler> @Nullable T getHandler(Logger logger, Class<T> handlerType) {
 		LogBuffer logBuffer = get(logger);
 
 		return (logBuffer != null ? logBuffer.getHandler(handlerType) : null);
@@ -177,10 +173,9 @@ public class LogBuffer extends Handler {
 	 * @param handlerType the type of {@linkplain Handler} to get.
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
-	@Nullable
-	public synchronized <T extends Handler> T getHandler(Class<T> handlerType) {
-		@Nullable
-		T found = null;
+
+	public synchronized <T extends Handler> @Nullable T getHandler(Class<T> handlerType) {
+		@Nullable T found = null;
 
 		for (Handler handler : this.handlers) {
 			if (handler.getClass().equals(handlerType)) {

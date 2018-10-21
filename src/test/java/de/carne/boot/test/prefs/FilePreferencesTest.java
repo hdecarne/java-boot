@@ -40,8 +40,7 @@ import de.carne.boot.prefs.FilePreferencesFactory;
  */
 class FilePreferencesTest {
 
-	@Nullable
-	private static Path storeHome = null;
+	private static @Nullable Path storeHome = null;
 
 	@BeforeAll
 	static void setUpStoreHomeAndSystemProperties() throws IOException {
