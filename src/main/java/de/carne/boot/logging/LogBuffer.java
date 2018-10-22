@@ -147,7 +147,7 @@ public class LogBuffer extends Handler {
 	 * @param handlerType the type of {@linkplain Handler} to get.
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
-	public static <T extends Handler> @Nullable T getHandler(Log log, Class<T> handlerType) {
+	public static <@Nullable T extends @Nullable Handler> T getHandler(Log log, Class<T> handlerType) {
 		return getHandler(log.logger(), handlerType);
 	}
 
@@ -160,7 +160,7 @@ public class LogBuffer extends Handler {
 	 * @param handlerType the type of {@linkplain Handler} to get.
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
-	public static <T extends Handler> @Nullable T getHandler(Logger logger, Class<T> handlerType) {
+	public static <@Nullable T extends @Nullable Handler> T getHandler(Logger logger, Class<T> handlerType) {
 		LogBuffer logBuffer = get(logger);
 
 		return (logBuffer != null ? logBuffer.getHandler(handlerType) : null);
@@ -174,7 +174,7 @@ public class LogBuffer extends Handler {
 	 * @return the found {@linkplain Handler} or {@code null}.
 	 */
 
-	public synchronized <T extends Handler> @Nullable T getHandler(Class<T> handlerType) {
+	public synchronized <@Nullable T extends @Nullable Handler> T getHandler(Class<T> handlerType) {
 		@Nullable T found = null;
 
 		for (Handler handler : this.handlers) {
