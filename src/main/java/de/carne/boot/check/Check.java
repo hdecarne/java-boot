@@ -18,7 +18,7 @@ package de.carne.boot.check;
 
 import java.text.MessageFormat;
 
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Utility class providing code check related functions.
@@ -38,7 +38,10 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type) {
+	public static <T> T isInstanceOf(@Nullable Object object, Class<T> type) {
+		if (object == null) {
+			throw new NullPointerException();
+		}
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException();
 		}
@@ -58,7 +61,10 @@ public final class Check {
 	 * @return the checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <@NonNull T> T isInstanceOf(Object object, Class<T> type, String pattern, Object... arguments) {
+	public static <T> T isInstanceOf(@Nullable Object object, Class<T> type, String pattern, Object... arguments) {
+		if (object == null) {
+			throw new NullPointerException(formatMessage(pattern, arguments));
+		}
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException(formatMessage(pattern, arguments));
 		}

@@ -29,14 +29,17 @@ class CheckTest {
 	private static final String MESSAGE_PATTERN = "Check failed: {0}";
 
 	@Test
-	void testCheckIsInstance() {
+	void testCheckIsInstanceOf() {
 		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class));
 		Assertions.assertEquals(this, Check.isInstanceOf(this, CheckTest.class, getClass().getSimpleName()));
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			Check.isInstanceOf(null, String.class);
+		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			Check.isInstanceOf(this, String.class);
 		});
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Check.isInstanceOf(this, String.class, getClass().getSimpleName());
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			Check.isInstanceOf(null, String.class, MESSAGE_PATTERN, getClass().getSimpleName());
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			Check.isInstanceOf(this, String.class, MESSAGE_PATTERN, getClass().getSimpleName());
