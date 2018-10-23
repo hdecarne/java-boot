@@ -87,7 +87,8 @@ abstract class FilePreferencesStore {
 		recordChange(data -> data.put(preferencesKey, value));
 	}
 
-	public synchronized @Nullable String get(FilePreferences preferences, String key) {
+	@Nullable
+	public synchronized String get(FilePreferences preferences, String key) {
 		String preferencesKey = getPreferencesKey(preferences, key);
 
 		return getCachedData().getProperty(preferencesKey);

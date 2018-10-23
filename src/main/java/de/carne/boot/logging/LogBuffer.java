@@ -63,7 +63,8 @@ public class LogBuffer extends Handler {
 	 * @param log the {@linkplain Log} to get the {@linkplain LogBuffer} for.
 	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
-	public static @Nullable LogBuffer get(Log log) {
+	@Nullable
+	public static LogBuffer get(Log log) {
 		return get(log.logger());
 	}
 
@@ -73,7 +74,8 @@ public class LogBuffer extends Handler {
 	 * @param logger the {@linkplain Logger} to get the {@linkplain LogBuffer} for.
 	 * @return the found {@linkplain LogBuffer} or {@code null} if none has been configured.
 	 */
-	public static @Nullable LogBuffer get(Logger logger) {
+	@Nullable
+	public static LogBuffer get(Logger logger) {
 		LogBuffer logBuffer = null;
 		Logger currentLogger = logger;
 

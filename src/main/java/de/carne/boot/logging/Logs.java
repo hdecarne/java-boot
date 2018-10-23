@@ -88,8 +88,7 @@ public final class Logs {
 		Set<Handler> handlers = new HashSet<>();
 
 		while (loggerNames.hasMoreElements()) {
-			@SuppressWarnings("null")
-			String loggerName = loggerNames.nextElement();
+			@SuppressWarnings("null") String loggerName = loggerNames.nextElement();
 			Logger logger = manager.getLogger(loggerName);
 
 			if (logger != null) {
@@ -174,8 +173,7 @@ public final class Logs {
 		}
 
 		LogLevel rootLoggerLogLevel = LogLevel.fromLevel(rootLoggerLevel);
-		@NonNull
-		String[] handlerNames = getStringsProperty(manager, "application.handlers");
+		@NonNull String[] handlerNames = getStringsProperty(manager, "application.handlers");
 
 		for (String handlerName : handlerNames) {
 			try {
@@ -300,7 +298,8 @@ public final class Logs {
 	 * @param defaultValue the the default value to return in case the property is undefined.
 	 * @return the defined value or the default value if the property is undefined.
 	 */
-	public static @Nullable Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
+	@Nullable
+	public static Filter getFilterProperty(LogManager manager, String name, @Nullable Filter defaultValue) {
 		String property = manager.getProperty(name);
 		Filter propertyValue = defaultValue;
 
