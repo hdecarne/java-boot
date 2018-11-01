@@ -1,4 +1,1 @@
 rootProject.name = 'java-boot'
-
-// To be removed at arrival of Gradle 5.0
-enableFeaturePreview('STABLE_PUBLISHING')
