@@ -165,7 +165,7 @@ public final class Logs {
 	}
 
 	private static void applyApplicationConfig(LogManager manager) {
-		Logger rootLogger = manager.getLogger("");
+		Logger rootLogger = Logger.getLogger("");
 		Level rootLoggerLevel = rootLogger.getLevel();
 
 		if (rootLoggerLevel == null) {
