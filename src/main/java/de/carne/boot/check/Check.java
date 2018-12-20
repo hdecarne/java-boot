@@ -134,7 +134,6 @@ public final class Check {
 		throw new IllegalStateException("Unexpected " + object.getClass().getName() + ": " + object);
 	}
 
-	@SuppressWarnings("null")
 	private static String formatMessage(String pattern, Object... arguments) {
 		return (arguments.length > 0 ? MessageFormat.format(pattern, arguments) : pattern);
 	}
