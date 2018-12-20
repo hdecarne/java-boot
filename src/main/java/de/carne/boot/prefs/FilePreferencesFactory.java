@@ -76,7 +76,7 @@ public class FilePreferencesFactory implements PreferencesFactory {
 	public static Path systemRootFile() {
 		String systemName = getSystemName();
 
-		return resolveStoreHomeFile("system." + systemName + ".conf");
+		return customRootFile("system." + systemName + ".conf");
 	}
 
 	/**
@@ -85,7 +85,17 @@ public class FilePreferencesFactory implements PreferencesFactory {
 	 * @return the file path used to store user preferences.
 	 */
 	public static Path userRootFile() {
-		return resolveStoreHomeFile("user.conf");
+		return customRootFile("user.conf");
+	}
+
+	/**
+	 * Gets the file path used to store custom preferences.
+	 *
+	 * @param name the file name to use.
+	 * @return the file path used to store custom preferences.
+	 */
+	public static Path customRootFile(String name) {
+		return resolveStoreHomeFile(name);
 	}
 
 	/**
@@ -135,7 +145,8 @@ public class FilePreferencesFactory implements PreferencesFactory {
 
 	private static Path resolveStoreHomeFile(String name) {
 		Path userHome = Paths.get(System.getProperty("user.home", "."));
-		Path storeHome = userHome.resolve(STORE_HOME);
+		Path storeHome = userHome
+				.resolve(STORE_HOME != null ? STORE_HOME : "." + FilePreferencesFactory.class.getPackage().getName());
 
 		return storeHome.resolve(name);
 	}

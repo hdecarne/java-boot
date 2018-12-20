@@ -22,18 +22,11 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -59,7 +52,7 @@ class FileStore extends FilePreferencesStore {
 				InputStream dataInputStream = Channels.newInputStream(dataChannel);
 				FileLock dataLock = dataChannel.tryLock(0, Long.MAX_VALUE, true)) {
 			if (dataLock == null) {
-				throw new IOException("Failed to obtain read lock for file: '" + this.file.toString() + "'");
+				throw new IOException("Failed to obtain read lock for file: '" + this.file + "'");
 			}
 			data.load(dataInputStream);
 		} catch (NoSuchFileException e) {
@@ -72,14 +65,12 @@ class FileStore extends FilePreferencesStore {
 	protected Properties syncData(List<Consumer<Properties>> changes) throws IOException {
 		Properties data = new Properties();
 
-		Files.createDirectories(this.file.getParent(), userDirectoryAttributes(this.file));
-		try (FileChannel dataChannel = FileChannel.open(this.file, StandardOpenOption.READ, StandardOpenOption.WRITE,
-				StandardOpenOption.CREATE);
+		try (FileChannel dataChannel = UserFile.open(this.file, StandardOpenOption.READ, StandardOpenOption.WRITE);
 				InputStream dataInputStream = Channels.newInputStream(dataChannel);
 				OutputStream dataOutputStream = Channels.newOutputStream(dataChannel);
 				FileLock dataLock = dataChannel.tryLock(0, Long.MAX_VALUE, false)) {
 			if (dataLock == null) {
-				throw new IOException("Failed to obtain write lock for file: '" + this.file.toString() + "'");
+				throw new IOException("Failed to obtain write lock for file: '" + this.file + "'");
 			}
 			data.load(dataInputStream);
 			for (Consumer<Properties> change : changes) {
@@ -104,17 +95,6 @@ class FileStore extends FilePreferencesStore {
 	@Override
 	public String toString() {
 		return this.file.toString();
-	}
-
-	private static FileAttribute<?>[] userDirectoryAttributes(Path path) {
-		Set<String> fileAttributeViews = path.getFileSystem().supportedFileAttributeViews();
-		List<FileAttribute<?>> attributes = new ArrayList<>();
-
-		if (fileAttributeViews.contains("posix")) {
-			attributes.add(PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ,
-					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE)));
-		}
-		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
 
 }
