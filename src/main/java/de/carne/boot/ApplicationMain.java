@@ -26,7 +26,9 @@ public interface ApplicationMain {
 	 *
 	 * @return the application's name.
 	 */
-	String name();
+	default String name() {
+		return getClass().getSimpleName();
+	}
 
 	/**
 	 * Runs the application.
