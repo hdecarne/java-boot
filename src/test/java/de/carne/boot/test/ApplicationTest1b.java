@@ -24,7 +24,7 @@ import de.carne.boot.Application;
 /**
  * Test {@linkplain Application} class.
  */
-class ApplicationTest1 {
+class ApplicationTest1b {
 
 	@BeforeAll
 	static void setUpApplication() {
@@ -36,7 +36,7 @@ class ApplicationTest1 {
 
 	@Test
 	void testSucess() {
-		Application.run(TEST_ARGS);
+		Application.main(TEST_ARGS);
 	}
 
 }

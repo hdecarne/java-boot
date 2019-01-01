@@ -16,28 +16,27 @@
  */
 package de.carne.boot.test;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.carne.boot.Application;
-import de.carne.boot.ApplicationMain;
 
 /**
- * @see ApplicationTest1a
+ * Test {@linkplain Application} class.
  */
-public class ApplicationTest1Main implements ApplicationMain {
+class ApplicationTest1a {
 
-	@Override
-	public String name() {
-		return getClass().getName();
+	@BeforeAll
+	static void setUpApplication() {
+		System.setProperty("de.carne.boot.Application", "test1");
+		System.setProperty("de.carne.boot.Application.debug", "true");
 	}
 
-	@Override
-	public int run(String[] args) {
-		Assertions.assertEquals(2, args.length);
-		Assertions.assertEquals("--arg", args[0]);
-		Assertions.assertEquals("test1", args[1]);
-		Assertions.assertEquals(this, Application.getMain(ApplicationTest1Main.class));
-		return 0;
+	private static final String[] TEST_ARGS = new String[] { "--arg", "test1" };
+
+	@Test
+	void testSucess() {
+		Application.run(TEST_ARGS);
 	}
 
 }
