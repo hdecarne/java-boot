@@ -19,6 +19,7 @@ package de.carne.boot;
 /**
  * Application entry point.
  */
+@FunctionalInterface
 public interface ApplicationMain {
 
 	/**
