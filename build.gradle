@@ -64,6 +64,7 @@ test {
 		events "failed"
 		exceptionFormat "full"
 	}
+	// Needed because Application class is statefull
 	forkEvery = 1
 }
 
