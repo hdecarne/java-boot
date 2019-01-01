@@ -36,7 +36,7 @@ class ApplicationTest1 {
 
 	@Test
 	void testSucess() {
-		Application.main(TEST_ARGS);
+		Application.run(TEST_ARGS);
 	}
 
 }

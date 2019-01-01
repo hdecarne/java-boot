@@ -37,11 +37,11 @@ class ApplicationTest4 {
 	private static final String[] TEST_ARGS = new String[] {};
 
 	@Test
-	void test() {
+	void testFailure() {
 		// Fail due to invalid main class in application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
-					Application.main(TEST_ARGS);
+					Application.run(TEST_ARGS);
 				});
 
 		Assertions.assertEquals(

@@ -62,18 +62,16 @@ public final class Application {
 	private static final InstanceHolder<ApplicationMain> APPLICATION_MAIN = new InstanceHolder<>();
 
 	/**
-	 * Runs the application.
+	 * Application entry point if run as Main class.
 	 *
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		final boolean launcherMode = new Exception().getStackTrace().length > 1;
 		int status = -1;
 
 		try {
 			if (DEBUG) {
 				debug("Booting application...");
-				debug("Launcher mode detected: " + launcherMode);
 			}
 			status = APPLICATION_MAIN.set(setupApplication()).run(args);
 			if (DEBUG) {
@@ -81,13 +79,29 @@ public final class Application {
 			}
 		} catch (RuntimeException e) {
 			error(e, "Application failed with exception: %1$s", e.getClass().getTypeName());
-			if (launcherMode) {
-				throw e;
-			}
 		}
-		if (status != 0 && !launcherMode) {
+		if (status != 0) {
 			System.exit(status);
 		}
+	}
+
+	/**
+	 * Application entry point if run from another class (e.g. during tests).
+	 *
+	 * @param args command line arguments.
+	 * @return the application status.
+	 */
+	public static int run(String[] args) {
+		int status = -1;
+
+		if (DEBUG) {
+			debug("Running application...");
+		}
+		status = APPLICATION_MAIN.set(setupApplication()).run(args);
+		if (DEBUG) {
+			debug("Application finished with status: %1$d", status);
+		}
+		return status;
 	}
 
 	private static ApplicationMain setupApplication() {
@@ -114,16 +128,14 @@ public final class Application {
 					error(null, "Failed to locate application configuration: %1$s", configName));
 		}
 
-		@SuppressWarnings("null")
-		URL configUrl = configUrls.nextElement();
+		@SuppressWarnings("null") URL configUrl = configUrls.nextElement();
 
 		if (configUrls.hasMoreElements()) {
 			StringBuilder configUrlsString = new StringBuilder();
 
 			configUrlsString.append(configUrl.toExternalForm());
 			do {
-				@SuppressWarnings("null")
-				URL extraConfigUrl = configUrls.nextElement();
+				@SuppressWarnings("null") URL extraConfigUrl = configUrls.nextElement();
 
 				configUrlsString.append(System.lineSeparator()).append('\t').append(extraConfigUrl.toExternalForm());
 			} while (configUrls.hasMoreElements());

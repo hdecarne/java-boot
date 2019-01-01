@@ -41,7 +41,7 @@ class ApplicationTest2 {
 		// Fail due to missing application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
-					Application.main(TEST_ARGS);
+					Application.run(TEST_ARGS);
 				});
 
 		Assertions.assertEquals("Failed to locate application configuration: META-INF/de.carne.boot.Application.test2",

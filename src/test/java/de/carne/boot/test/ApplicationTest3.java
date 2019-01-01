@@ -41,7 +41,7 @@ class ApplicationTest3 {
 		// Fail due to empty application configuration
 		ApplicationInitializationException exception = Assertions.assertThrows(ApplicationInitializationException.class,
 				() -> {
-					Application.main(TEST_ARGS);
+					Application.run(TEST_ARGS);
 				});
 
 		Assertions.assertEquals("Failed to read application configuration: META-INF/de.carne.boot.Application.test3",
