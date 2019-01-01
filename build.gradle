@@ -64,6 +64,7 @@ test {
 		events "failed"
 		exceptionFormat "full"
 	}
+	forkEvery = 1
 }
 
 jacoco {
