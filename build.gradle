@@ -50,7 +50,7 @@ dependencies {
 	compileOnly(group: "org.slf4j", name: "slf4j-api", version: "1.7.25")
 	compileOnly(group: "org.apache.logging.log4j", name: "log4j-api", version: "2.11.1")
 
-	testImplementation(group: "de.carne.common", name: "java-test", version: "1.0.0-SNAPSHOT")
+	testImplementation(group: "de.carne.common", name: "java-test", version: "1.0.0")
 
 	testImplementation(group: "org.apache.logging.log4j", name: "log4j-core", version: "2.11.1")
 	testRuntimeOnly(group: "org.slf4j", name: "slf4j-api", version: "1.7.25")
