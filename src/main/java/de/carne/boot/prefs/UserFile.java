@@ -121,8 +121,8 @@ public final class UserFile {
 	}
 
 	private static UserPrincipal getCurrentUser(FileSystem fileSystem) throws IOException {
-		return fileSystem.getUserPrincipalLookupService()
-				.lookupPrincipalByName(Objects.requireNonNull(System.getProperty("user.name")));
+		return Objects.requireNonNull(fileSystem.getUserPrincipalLookupService()
+				.lookupPrincipalByName(Objects.requireNonNull(System.getProperty("user.name"))));
 	}
 
 	private static FileAttribute<List<AclEntry>> asFileAttribute(AclEntry... value) {
