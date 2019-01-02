@@ -165,26 +165,34 @@ public final class Logs {
 	}
 
 	private static void applyApplicationConfig(LogManager manager) {
-		Logger rootLogger = Logger.getLogger("");
-		Level rootLoggerLevel = rootLogger.getLevel();
-
-		if (rootLoggerLevel == null) {
-			rootLoggerLevel = Level.INFO;
-		}
-
-		LogLevel rootLoggerLogLevel = LogLevel.fromLevel(rootLoggerLevel);
 		@NonNull String[] handlerNames = getStringsProperty(manager, "application.handlers");
 
-		for (String handlerName : handlerNames) {
-			try {
-				Handler handler = newClassInstance(handlerName, Handler.class);
-				Level level = getLevelProperty(manager, handlerName + ".level", rootLoggerLogLevel);
+		if (handlerNames.length > 0) {
+			Logger rootLogger = manager.getLogger("");
 
-				handler.setLevel(level);
-				rootLogger.addHandler(handler);
-			} catch (ReflectiveOperationException e) {
-				Logs.DEFAULT_ERROR_MANAGER.error("Unable to instantiate handler: " + handlerName, e,
-						ErrorManager.GENERIC_FAILURE);
+			if (rootLogger != null) {
+				Level rootLoggerLevel = rootLogger.getLevel();
+
+				if (rootLoggerLevel == null) {
+					rootLoggerLevel = Level.INFO;
+				}
+
+				LogLevel rootLoggerLogLevel = LogLevel.fromLevel(rootLoggerLevel);
+				for (String handlerName : handlerNames) {
+					try {
+						Handler handler = newClassInstance(handlerName, Handler.class);
+						Level level = getLevelProperty(manager, handlerName + ".level", rootLoggerLogLevel);
+
+						handler.setLevel(level);
+						rootLogger.addHandler(handler);
+					} catch (ReflectiveOperationException e) {
+						Logs.DEFAULT_ERROR_MANAGER.error("Unable to instantiate handler: " + handlerName, e,
+								ErrorManager.GENERIC_FAILURE);
+					}
+				}
+			} else {
+				Logs.DEFAULT_ERROR_MANAGER.error("Root logger not yet available; failed to apply application handlers",
+						null, ErrorManager.GENERIC_FAILURE);
 			}
 		}
 	}

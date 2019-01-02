@@ -33,9 +33,8 @@ public final class Config {
 	 * Constructs a {@linkplain Config} instance and applies default logging configuration.
 	 */
 	public Config() {
-		@SuppressWarnings("null")
-		@NonNull
-		String config = System.getProperty(getClass().getName(), Logs.CONFIG_DEFAULT);
+		@SuppressWarnings("null") @NonNull String config = System.getProperty(getClass().getName(),
+				Logs.CONFIG_DEFAULT);
 
 		try {
 			Logs.readConfig(config);
