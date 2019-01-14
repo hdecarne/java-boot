@@ -78,44 +78,49 @@ public final class UserFile {
 	}
 
 	private static FileAttribute<?>[] userDirectoryAttributes(Path path) throws IOException {
-		FileSystem fileSystem = path.getFileSystem();
-		Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 
-		if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
-			EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
-					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE);
+		try (FileSystem fileSystem = path.getFileSystem()) {
+			Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 
-			attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
-		} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
-			AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW).setPrincipal(getCurrentUser(fileSystem))
-					.setPermissions(AclEntryPermission.values()).build();
+			if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
+				EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
+						PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE);
 
-			attributes.add(asFileAttribute(acl));
-		} else {
-			LOG.warning("No supported access control model found {0} for user directory ''{1}''", fileAttributeViews,
-					path);
+				attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
+			} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
+				AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW)
+						.setPrincipal(getCurrentUser(fileSystem)).setPermissions(AclEntryPermission.values()).build();
+
+				attributes.add(asFileAttribute(acl));
+			} else {
+				LOG.warning("No supported access control model found {0} for user directory ''{1}''",
+						fileAttributeViews, path);
+			}
 		}
 		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
 
 	private static FileAttribute<?>[] userFileAttributes(Path path) throws IOException {
-		FileSystem fileSystem = path.getFileSystem();
-		Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 
-		if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
-			EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
-					PosixFilePermission.OWNER_WRITE);
+		try (FileSystem fileSystem = path.getFileSystem()) {
+			Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 
-			attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
-		} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
-			AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW).setPrincipal(getCurrentUser(fileSystem))
-					.setPermissions(AclEntryPermission.values()).build();
+			if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
+				EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
+						PosixFilePermission.OWNER_WRITE);
 
-			attributes.add(asFileAttribute(acl));
-		} else {
-			LOG.warning("No supported access control model found {0} for user file ''{1}''", fileAttributeViews, path);
+				attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
+			} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
+				AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW)
+						.setPrincipal(getCurrentUser(fileSystem)).setPermissions(AclEntryPermission.values()).build();
+
+				attributes.add(asFileAttribute(acl));
+			} else {
+				LOG.warning("No supported access control model found {0} for user file ''{1}''", fileAttributeViews,
+						path);
+			}
 		}
 		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
@@ -125,7 +130,7 @@ public final class UserFile {
 				.lookupPrincipalByName(Objects.requireNonNull(System.getProperty("user.name"))));
 	}
 
-	private static FileAttribute<List<AclEntry>> asFileAttribute(AclEntry... value) {
+	private static FileAttribute<List<AclEntry>> asFileAttribute(@NonNull AclEntry... value) {
 		return new FileAttribute<List<AclEntry>>() {
 
 			@Override
@@ -137,6 +142,7 @@ public final class UserFile {
 			public List<AclEntry> value() {
 				return Arrays.asList(value);
 			}
+
 		};
 	}
 
