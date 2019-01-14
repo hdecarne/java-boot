@@ -77,50 +77,47 @@ public final class UserFile {
 		return FileChannel.open(file, openOptions, userFileAttributes(file));
 	}
 
+	@SuppressWarnings("resource")
 	private static FileAttribute<?>[] userDirectoryAttributes(Path path) throws IOException {
+		FileSystem fileSystem = path.getFileSystem();
+		Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 
-		try (FileSystem fileSystem = path.getFileSystem()) {
-			Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
+		if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
+			EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
+					PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE);
 
-			if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
-				EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
-						PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE);
+			attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
+		} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
+			AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW).setPrincipal(getCurrentUser(fileSystem))
+					.setPermissions(AclEntryPermission.values()).build();
 
-				attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
-			} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
-				AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW)
-						.setPrincipal(getCurrentUser(fileSystem)).setPermissions(AclEntryPermission.values()).build();
-
-				attributes.add(asFileAttribute(acl));
-			} else {
-				LOG.warning("No supported access control model found {0} for user directory ''{1}''",
-						fileAttributeViews, path);
-			}
+			attributes.add(asFileAttribute(acl));
+		} else {
+			LOG.warning("No supported access control model found {0} for user directory ''{1}''", fileAttributeViews,
+					path);
 		}
 		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
 
+	@SuppressWarnings("resource")
 	private static FileAttribute<?>[] userFileAttributes(Path path) throws IOException {
+		FileSystem fileSystem = path.getFileSystem();
+		Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
 		List<FileAttribute<?>> attributes = new ArrayList<>();
 
-		try (FileSystem fileSystem = path.getFileSystem()) {
-			Set<String> fileAttributeViews = fileSystem.supportedFileAttributeViews();
+		if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
+			EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
+					PosixFilePermission.OWNER_WRITE);
 
-			if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_POSIX)) {
-				EnumSet<PosixFilePermission> posixPermissions = EnumSet.of(PosixFilePermission.OWNER_READ,
-						PosixFilePermission.OWNER_WRITE);
+			attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
+		} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
+			AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW).setPrincipal(getCurrentUser(fileSystem))
+					.setPermissions(AclEntryPermission.values()).build();
 
-				attributes.add(PosixFilePermissions.asFileAttribute(posixPermissions));
-			} else if (fileAttributeViews.contains(FILE_ATTRIBUTE_VIEW_ACL)) {
-				AclEntry acl = AclEntry.newBuilder().setType(AclEntryType.ALLOW)
-						.setPrincipal(getCurrentUser(fileSystem)).setPermissions(AclEntryPermission.values()).build();
-
-				attributes.add(asFileAttribute(acl));
-			} else {
-				LOG.warning("No supported access control model found {0} for user file ''{1}''", fileAttributeViews,
-						path);
-			}
+			attributes.add(asFileAttribute(acl));
+		} else {
+			LOG.warning("No supported access control model found {0} for user file ''{1}''", fileAttributeViews, path);
 		}
 		return attributes.toArray(new @Nullable FileAttribute<?>[attributes.size()]);
 	}
