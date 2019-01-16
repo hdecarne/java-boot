@@ -88,7 +88,7 @@ public final class Logs {
 		Set<Handler> handlers = new HashSet<>();
 
 		while (loggerNames.hasMoreElements()) {
-			@SuppressWarnings("null") String loggerName = loggerNames.nextElement();
+			String loggerName = loggerNames.nextElement();
 			Logger logger = manager.getLogger(loggerName);
 
 			if (logger != null) {
@@ -218,9 +218,10 @@ public final class Logs {
 	 * @param name the property name to evaluate.
 	 * @return the defined value or the default value if the property is undefined.
 	 */
+	@SuppressWarnings("null")
 	public static @NonNull String[] getStringsProperty(LogManager manager, String name) {
 		String property = manager.getProperty(name);
-		List<String> propertyValue = new ArrayList<>();
+		List<@NonNull String> propertyValue = new ArrayList<>();
 
 		if (property != null) {
 			StringTokenizer propertyTokens = new StringTokenizer(property, " ,");

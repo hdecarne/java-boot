@@ -27,6 +27,8 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * {@linkplain ClassLoader} implementation used to load classes from a single Jar file including any nested Jar file
  * during class search.
@@ -59,7 +61,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 
 	private static URL[] assembleInlineJarClasspath(JarURLConnection jarConnection, ClassLoader jarLoader)
 			throws IOException {
-		List<String> jarJars;
+		List<@NonNull String> jarJars;
 
 		try (Stream<JarEntry> jarEntries = jarConnection.getJarFile().stream()) {
 			jarJars = jarEntries.filter(entry -> entry.getName().endsWith(".jar")).map(JarEntry::getName)
@@ -69,7 +71,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 	}
 
 	private static URL[] assembleExternalJarClasspath(File file, ClassLoader jarLoader) throws IOException {
-		List<String> jarJars;
+		List<@NonNull String> jarJars;
 
 		try (JarFile jarFile = new JarFile(file); Stream<JarEntry> jarEntries = jarFile.stream()) {
 			jarJars = jarEntries.filter(entry -> entry.getName().endsWith(".jar")).map(JarEntry::getName)
@@ -78,7 +80,7 @@ public final class ApplicationJarClassLoader extends URLClassLoader {
 		return assembleClasspath(jarJars, jarLoader);
 	}
 
-	private static URL[] assembleClasspath(List<String> jarJars, ClassLoader jarLoader) throws IOException {
+	private static URL[] assembleClasspath(List<@NonNull String> jarJars, ClassLoader jarLoader) throws IOException {
 		URL[] classpath = new URL[jarJars.size()];
 
 		if (classpath.length > 0) {

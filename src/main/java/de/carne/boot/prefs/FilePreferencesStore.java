@@ -30,6 +30,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.carne.boot.ShutdownHooks;
@@ -100,7 +101,6 @@ abstract class FilePreferencesStore {
 		recordChange(data -> data.remove(preferencesKey));
 	}
 
-	@SuppressWarnings("null")
 	public synchronized void removeNode(FilePreferences preferences) {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
 
@@ -118,7 +118,7 @@ abstract class FilePreferencesStore {
 	@SuppressWarnings("null")
 	public synchronized String[] keys(FilePreferences preferences) {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
-		Set<String> keys = getCachedData().keySet().stream().map(Object::toString)
+		Set<@NonNull String> keys = getCachedData().keySet().stream().map(Object::toString)
 				.map(key -> extractKey(preferencesKeyPrefix, key)).filter(s -> !s.isEmpty())
 				.collect(Collectors.toSet());
 

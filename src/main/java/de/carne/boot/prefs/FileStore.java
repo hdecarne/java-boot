@@ -26,6 +26,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Consumer;
 
@@ -94,7 +95,7 @@ class FileStore extends FilePreferencesStore {
 
 	@Override
 	public String toString() {
-		return this.file.toString();
+		return Objects.toString(this.file);
 	}
 
 }

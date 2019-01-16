@@ -104,8 +104,8 @@ public class ConsoleFormatter extends Formatter {
 				this.tsPattern.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault())));
 	}
 
-	private StringBuilder formatLevel(StringBuilder buffer, Level level) {
-		int levelValue = level.intValue();
+	private StringBuilder formatLevel(StringBuilder buffer, @Nullable Level level) {
+		int levelValue = (level != null ? level.intValue() : Integer.MAX_VALUE);
 		String levelStyle;
 		String levelString;
 
@@ -124,9 +124,12 @@ public class ConsoleFormatter extends Formatter {
 		} else if (levelValue <= LogLevel.LEVEL_ERROR.intValue()) {
 			levelStyle = this.levelStyleError;
 			levelString = "ERROR  ";
-		} else {
+		} else if (levelValue <= LogLevel.LEVEL_NOTICE.intValue()) {
 			levelStyle = this.levelStyleNotice;
 			levelString = "NOTICE ";
+		} else {
+			levelStyle = this.levelStyleError;
+			levelString = "?????? ";
 		}
 		if (this.enableAnsiOutput) {
 			buffer.append(levelStyle);

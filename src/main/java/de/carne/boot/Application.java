@@ -128,14 +128,14 @@ public final class Application {
 					error(null, "Failed to locate application configuration: %1$s", configName));
 		}
 
-		@SuppressWarnings("null") URL configUrl = configUrls.nextElement();
+		URL configUrl = configUrls.nextElement();
 
 		if (configUrls.hasMoreElements()) {
 			StringBuilder configUrlsString = new StringBuilder();
 
 			configUrlsString.append(configUrl.toExternalForm());
 			do {
-				@SuppressWarnings("null") URL extraConfigUrl = configUrls.nextElement();
+				URL extraConfigUrl = configUrls.nextElement();
 
 				configUrlsString.append(System.lineSeparator()).append('\t').append(extraConfigUrl.toExternalForm());
 			} while (configUrls.hasMoreElements());
