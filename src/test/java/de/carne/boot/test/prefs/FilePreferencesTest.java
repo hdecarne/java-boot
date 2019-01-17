@@ -18,47 +18,30 @@ package de.carne.boot.test.prefs;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.stream.Stream;
 
-import org.eclipse.jdt.annotation.Nullable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.support.io.TempDirectory;
+import org.junit.jupiter.api.support.io.TempDirectory.TempDir;
 
 import de.carne.boot.prefs.FilePreferencesFactory;
 
 /**
  * Test {@linkplain FilePreferencesFactory} class.
  */
+@ExtendWith(TempDirectory.class)
 class FilePreferencesTest {
 
-	private static @Nullable Path storeHome = null;
-
 	@BeforeAll
-	static void setUpStoreHomeAndSystemProperties() throws IOException {
-		storeHome = Files.createTempDirectory(FilePreferencesTest.class.getName());
-		System.setProperty("de.carne.boot.prefs.FilePreferences", Objects.requireNonNull(storeHome).toString());
-	}
-
-	@AfterAll
-	static void cleanUpTempPath() throws IOException {
-		try (Stream<Path> paths = Files.walk(Objects.requireNonNull(storeHome))) {
-			paths.sorted(Comparator.reverseOrder()).forEach(path -> {
-				try {
-					Files.delete(path);
-				} catch (IOException e) {
-					Assertions.fail(e);
-				}
-			});
-		}
+	static void setUpStoreHomeAndSystemProperties(@TempDir Path storeHome) {
+		System.setProperty("de.carne.boot.prefs.FilePreferences", storeHome.toString());
 	}
 
 	@Test

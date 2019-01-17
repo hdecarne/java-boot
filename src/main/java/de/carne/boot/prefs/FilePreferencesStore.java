@@ -105,7 +105,7 @@ abstract class FilePreferencesStore {
 		String preferencesKeyPrefix = getPreferencesKey(preferences, "");
 
 		recordChange(data -> {
-			Iterator<Map.Entry<Object, Object>> entryIterator = data.entrySet().iterator();
+			@SuppressWarnings("null") Iterator<Map.Entry<Object, Object>> entryIterator = data.entrySet().iterator();
 
 			while (entryIterator.hasNext()) {
 				if (entryIterator.next().getKey().toString().startsWith(preferencesKeyPrefix)) {

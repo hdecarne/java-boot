@@ -14,11 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-@NonNullByDefault({ PARAMETER, RETURN_TYPE, FIELD })
+@NonNullByDefault()
 package de.carne.boot.logging;
-
-import static org.eclipse.jdt.annotation.DefaultLocation.FIELD;
-import static org.eclipse.jdt.annotation.DefaultLocation.PARAMETER;
-import static org.eclipse.jdt.annotation.DefaultLocation.RETURN_TYPE;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
