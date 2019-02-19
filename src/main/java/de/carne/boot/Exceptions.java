@@ -23,7 +23,6 @@ import java.io.StringWriter;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.carne.boot.logging.Log;
-import de.carne.util.Strings;
 
 /**
  * Utility class providing {@linkplain Exception}/{@linkplain Throwable} handling related functions.
@@ -84,15 +83,14 @@ public final class Exceptions {
 	 * @param exception the {@linkplain Throwable} to get the message from.
 	 * @return the {@linkplain Throwable}'s message.
 	 */
-	@SuppressWarnings("null")
 	public static String getMessage(@Nullable Throwable exception) {
 		String message = "<none>";
 
 		if (exception != null) {
 			message = exception.getLocalizedMessage();
-			if (Strings.isEmpty(message)) {
+			if (message == null) {
 				message = exception.getMessage();
-				if (Strings.isEmpty(message)) {
+				if (message == null) {
 					message = exception.getClass().getName();
 				}
 			}
