@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.carne.boot.logging.Log;
+import de.carne.util.Strings;
 
 /**
  * Utility class providing {@linkplain Exception}/{@linkplain Throwable} handling related functions.
@@ -70,6 +71,33 @@ public final class Exceptions {
 		if (exception != null) {
 			LOG.warning(exception, "Ignored exception: {0}", exception.getClass().getTypeName());
 		}
+	}
+
+	/**
+	 * Gets an {@linkplain Throwable}'s best message.
+	 * <p>
+	 * This function returns a default message in case {@code null} is submitted. Otherwise it tries
+	 * {@linkplain Throwable#getLocalizedMessage()} and {@linkplain Throwable#getMessage()} to get the best possible
+	 * message. The former function do not return anything the {@linkplain Throwable}'s type is returned.
+	 * </p>
+	 *
+	 * @param exception the {@linkplain Throwable} to get the message from.
+	 * @return the {@linkplain Throwable}'s message.
+	 */
+	@SuppressWarnings("null")
+	public static String getMessage(@Nullable Throwable exception) {
+		String message = "<none>";
+
+		if (exception != null) {
+			message = exception.getLocalizedMessage();
+			if (Strings.isEmpty(message)) {
+				message = exception.getMessage();
+				if (Strings.isEmpty(message)) {
+					message = exception.getClass().getName();
+				}
+			}
+		}
+		return message;
 	}
 
 	/**

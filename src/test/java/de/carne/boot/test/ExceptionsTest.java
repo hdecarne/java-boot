@@ -28,6 +28,8 @@ import de.carne.boot.Exceptions;
  */
 class ExceptionsTest {
 
+	private static final String EXCEPTION_MESSAGE = "An error occurred";
+
 	@Test
 	void testToRuntimeFromChecked() {
 		Assertions.assertThrows(RuntimeException.class, () -> {
@@ -63,6 +65,13 @@ class ExceptionsTest {
 	}
 
 	@Test
+	void testGetMessage() {
+		Assertions.assertEquals("<none>", Exceptions.getMessage(null));
+		Assertions.assertEquals(EXCEPTION_MESSAGE, Exceptions.getMessage(new IOException(EXCEPTION_MESSAGE)));
+		Assertions.assertEquals(IOException.class.getName(), Exceptions.getMessage(new IOException()));
+	}
+
+	@Test
 	void testGetStackTrace() {
 		String stackTrace = Exceptions.getStackTrace(new IOException());
 
@@ -76,10 +85,9 @@ class ExceptionsTest {
 
 		Assertions.assertEquals(noMessageException.getClass().getName(), Exceptions.toString(noMessageException));
 
-		String message = "An error occurred";
-		Throwable messageException = new IOException(message);
+		Throwable messageException = new IOException(EXCEPTION_MESSAGE);
 
-		Assertions.assertEquals(messageException.getClass().getName() + ": " + message,
+		Assertions.assertEquals(messageException.getClass().getName() + ": " + EXCEPTION_MESSAGE,
 				Exceptions.toString(messageException));
 	}
 
