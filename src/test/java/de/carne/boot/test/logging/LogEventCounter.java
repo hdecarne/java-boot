@@ -25,6 +25,7 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
@@ -54,10 +55,11 @@ public class LogEventCounter extends AbstractAppender {
 	 * @param filter see {@linkplain AbstractAppender}.
 	 * @param layout see {@linkplain AbstractAppender}.
 	 * @param ignoreExceptions see {@linkplain AbstractAppender}.
+	 * @param properties see {@linkplain AbstractAppender}.
 	 */
-	public LogEventCounter(String name, Filter filter, Layout<? extends Serializable> layout,
-			boolean ignoreExceptions) {
-		super(name, filter, layout, ignoreExceptions);
+	public LogEventCounter(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions,
+			Property... properties) {
+		super(name, filter, layout, ignoreExceptions, properties);
 	}
 
 	/**
