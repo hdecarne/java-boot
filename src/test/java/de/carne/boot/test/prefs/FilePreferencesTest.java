@@ -27,16 +27,13 @@ import java.util.prefs.Preferences;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.support.io.TempDirectory;
-import org.junit.jupiter.api.support.io.TempDirectory.TempDir;
+import org.junit.jupiter.api.io.TempDir;
 
 import de.carne.boot.prefs.FilePreferencesFactory;
 
 /**
  * Test {@linkplain FilePreferencesFactory} class.
  */
-@ExtendWith(TempDirectory.class)
 class FilePreferencesTest {
 
 	@BeforeAll
