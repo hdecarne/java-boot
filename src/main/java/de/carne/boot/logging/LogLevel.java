@@ -25,6 +25,8 @@ public class LogLevel extends Level {
 
 	private static final long serialVersionUID = 9195245351818452478L;
 
+	private static final String RESOURCE_BUNDLE = LogLevel.class.getName() + "Names";
+
 	/**
 	 * Level Notice.
 	 */
@@ -56,7 +58,7 @@ public class LogLevel extends Level {
 	public static final LogLevel LEVEL_TRACE = new LogLevel("LEVEL_TRACE", Level.FINEST.intValue());
 
 	private LogLevel(String name, int levelValue) {
-		super(name, levelValue);
+		super(name, levelValue, RESOURCE_BUNDLE);
 	}
 
 	/**
