@@ -90,7 +90,7 @@ public final class Log {
 	 */
 	@SuppressWarnings("null")
 	public static Log root() {
-		return rootHolder.getAndUpdate(rootLog -> (rootLog != null ? rootLog : new Log(Logger.getLogger(""))));
+		return rootHolder.updateAndGet(rootLog -> (rootLog != null ? rootLog : new Log(Logger.getLogger(""))));
 	}
 
 	/**
