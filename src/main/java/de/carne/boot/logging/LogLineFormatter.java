@@ -37,7 +37,7 @@ public class LogLineFormatter extends Formatter {
 	/**
 	 * The {@linkplain DateTimeFormatter} used for record timestamp formatting.
 	 */
-	public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS");
+	public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS");
 
 	@Override
 	public String format(@Nullable LogRecord record) {
@@ -45,10 +45,7 @@ public class LogLineFormatter extends Formatter {
 
 		if (record != null) {
 			try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
-				LocalDateTime recordTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getMillis()),
-						ZoneId.systemDefault());
-
-				pw.print(DATE_FORMAT.format(recordTimestamp));
+				pw.print(formatMillis(record));
 				pw.print(" [");
 				pw.print(record.getThreadID());
 				pw.print("] ");
@@ -70,6 +67,20 @@ public class LogLineFormatter extends Formatter {
 			}
 		}
 		return (message != null ? message : "...");
+	}
+
+	/**
+	 * Formats a {@linkplain LogRecord}'s time attribute.
+	 * 
+	 * @param record the {@linkplain LogRecord} to format.
+	 * @return the formatted {@linkplain LogRecord} time.
+	 * @see LogRecord#getMillis()
+	 */
+	public String formatMillis(LogRecord record) {
+		LocalDateTime recordTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getMillis()),
+				ZoneId.systemDefault());
+
+		return DATE_TIME_FORMAT.format(recordTimestamp);
 	}
 
 }
