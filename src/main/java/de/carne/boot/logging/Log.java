@@ -19,12 +19,11 @@ package de.carne.boot.logging;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import de.carne.util.Lazy;
 
 /**
  * Wrapper class for the JDK's {@linkplain Logger} class to make logging easy and more efficient.
@@ -82,15 +81,16 @@ public final class Log {
 		this.logger = logger;
 	}
 
-	private static final Lazy<Log> rootHolder = new Lazy<>(() -> new Log(Logger.getLogger("")));
+	private static final AtomicReference<@Nullable Log> rootHolder = new AtomicReference<>();
 
 	/**
 	 * Gets the {@linkplain Log} instance that represents the root {@linkplain Logger}.
-	 * 
+	 *
 	 * @return the {@linkplain Log} instance that represents the root {@linkplain Logger}.
 	 */
+	@SuppressWarnings("null")
 	public static Log root() {
-		return rootHolder.get();
+		return rootHolder.getAndUpdate(rootLog -> (rootLog != null ? rootLog : new Log(Logger.getLogger(""))));
 	}
 
 	/**
