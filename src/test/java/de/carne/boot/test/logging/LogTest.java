@@ -37,6 +37,11 @@ class LogTest {
 
 		Assertions.assertEquals(Object.class.getName(), customLog.logger().getName());
 		Assertions.assertEquals(Object.class.getName(), customLog.toString());
+
+		Log rootLog = Log.root();
+
+		Assertions.assertEquals("", rootLog.logger().getName());
+		Assertions.assertEquals("", rootLog.toString());
 	}
 
 }

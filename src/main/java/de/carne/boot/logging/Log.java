@@ -24,8 +24,10 @@ import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.carne.util.Lazy;
+
 /**
- * Wrapper class for the JDK's {@linkplain Logger} class to make logging easy and efficient.
+ * Wrapper class for the JDK's {@linkplain Logger} class to make logging easy and more efficient.
  */
 public final class Log {
 
@@ -36,39 +38,41 @@ public final class Log {
 	private final Logger logger;
 
 	/**
-	 * Construct {@linkplain Log}.
+	 * Constructs a new {@linkplain Log} instance.
 	 * <p>
 	 * The created {@linkplain Logger} is named after the calling class' name.
+	 * </p>
 	 */
 	public Log() {
 		this(Logger.getLogger(getCallerClassName()));
 	}
 
 	/**
-	 * Construct {@linkplain Log}.
+	 * Constructs a new {@linkplain Log} instance.
 	 * <p>
 	 * The created {@linkplain Logger} is named after the calling class' name.
+	 * </p>
 	 *
-	 * @param resourceBundleName The name of the {@linkplain ResourceBundle} to use for log message localization.
+	 * @param resourceBundleName the name of the {@linkplain ResourceBundle} to use for log message localization.
 	 */
 	public Log(String resourceBundleName) {
 		this(Logger.getLogger(getCallerClassName(), resourceBundleName));
 	}
 
 	/**
-	 * Construct {@linkplain Log}.
+	 * Constructs a new {@linkplain Log} instance.
 	 *
-	 * @param clazz The {@linkplain Class} to use for the {@linkplain Logger} name.
+	 * @param clazz the {@linkplain Class} to use for the {@linkplain Logger} name.
 	 */
 	public Log(Class<?> clazz) {
 		this(Logger.getLogger(clazz.getName()));
 	}
 
 	/**
-	 * Construct {@linkplain Log}.
+	 * Constructs a new {@linkplain Log} isntance.
 	 *
-	 * @param clazz The {@linkplain Class} to use for the {@linkplain Logger} name.
-	 * @param resourceBundleName The name of the {@linkplain ResourceBundle} to use for log message localization.
+	 * @param clazz the {@linkplain Class} to use for the {@linkplain Logger} name.
+	 * @param resourceBundleName the name of the {@linkplain ResourceBundle} to use for log message localization.
 	 */
 	public Log(Class<?> clazz, String resourceBundleName) {
 		this(Logger.getLogger(clazz.getName(), resourceBundleName));
@@ -78,19 +82,30 @@ public final class Log {
 		this.logger = logger;
 	}
 
+	private static final Lazy<Log> rootHolder = new Lazy<>(() -> new Log(Logger.getLogger("")));
+
 	/**
-	 * Get the {@linkplain Logger} represented by this instance.
+	 * Gets the {@linkplain Log} instance that represents the root {@linkplain Logger}.
+	 * 
+	 * @return the {@linkplain Log} instance that represents the root {@linkplain Logger}.
+	 */
+	public static Log root() {
+		return rootHolder.get();
+	}
+
+	/**
+	 * Gets the {@linkplain Logger} represented by this instance.
 	 *
-	 * @return The {@linkplain Logger} represented by this instance.
+	 * @return the {@linkplain Logger} represented by this instance.
 	 */
 	public Logger logger() {
 		return this.logger;
 	}
 
 	/**
-	 * Check whether a message of the submitted {@linkplain Level} would be logged by this {@linkplain Log}.
+	 * Checks whether a message of the submitted {@linkplain Level} would be logged by this {@linkplain Log} instance.
 	 *
-	 * @param level The {@linkplain Level} to check.
+	 * @param level the {@linkplain Level} to check.
 	 * @return {@code true} if the submitted {@linkplain Level} is enabled.
 	 */
 	public boolean isLoggable(Level level) {
@@ -98,12 +113,12 @@ public final class Log {
 	}
 
 	/**
-	 * Log a message with the given severity.
+	 * Logs a message with the given severity.
 	 *
-	 * @param level The {@linkplain Level} of the message.
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param level the {@linkplain Level} of the message.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void log(Level level, @Nullable Throwable thrown, String msg, Object... parameters) {
 		if (this.logger.isLoggable(level)) {
@@ -112,7 +127,8 @@ public final class Log {
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_NOTICE} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_NOTICE} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_NOTICE} is enabled.
 	 */
@@ -121,28 +137,29 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_NOTICE} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_NOTICE} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void notice(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_NOTICE, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_NOTICE} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_NOTICE} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void notice(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_NOTICE, thrown, msg, parameters);
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_ERROR} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_ERROR} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_ERROR} is enabled.
 	 */
@@ -151,28 +168,29 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_ERROR} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_ERROR} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void error(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_ERROR, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_ERROR} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_ERROR} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void error(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_ERROR, thrown, msg, parameters);
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_WARNING} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_WARNING} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_WARNING} is enabled.
 	 */
@@ -181,28 +199,29 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_WARNING} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_WARNING} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void warning(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_WARNING, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_WARNING} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_WARNING} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void warning(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_WARNING, thrown, msg, parameters);
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_INFO} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_INFO} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_INFO} is enabled.
 	 */
@@ -211,28 +230,29 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_INFO} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_INFO} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void info(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_INFO, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_INFO} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_INFO} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void info(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_INFO, thrown, msg, parameters);
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_DEBUG} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_DEBUG} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_DEBUG} is enabled.
 	 */
@@ -241,28 +261,29 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_DEBUG} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_DEBUG} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void debug(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_DEBUG, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_DEBUG} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_DEBUG} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void debug(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_DEBUG, thrown, msg, parameters);
 	}
 
 	/**
-	 * Check whether a {@linkplain LogLevel#LEVEL_TRACE} message of level would be logged by this {@linkplain Log}.
+	 * Checks whether a {@linkplain LogLevel#LEVEL_TRACE} message of level would be logged by this {@linkplain Log}
+	 * instance.
 	 *
 	 * @return {@code true} if {@linkplain LogLevel#LEVEL_TRACE} is enabled.
 	 */
@@ -271,21 +292,21 @@ public final class Log {
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_TRACE} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_TRACE} message.
 	 *
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void trace(String msg, Object... parameters) {
 		log(LogLevel.LEVEL_TRACE, null, msg, parameters);
 	}
 
 	/**
-	 * Log a {@linkplain LogLevel#LEVEL_TRACE} message.
+	 * Logs a {@linkplain LogLevel#LEVEL_TRACE} message.
 	 *
-	 * @param thrown The {@linkplain Throwable} related to the message (may be {@code null}).
-	 * @param msg The message to log.
-	 * @param parameters The message parameters to log.
+	 * @param thrown the {@linkplain Throwable} related to the message (may be {@code null}).
+	 * @param msg the message to log.
+	 * @param parameters the message parameters to log.
 	 */
 	public void trace(Throwable thrown, String msg, Object... parameters) {
 		log(LogLevel.LEVEL_TRACE, thrown, msg, parameters);
