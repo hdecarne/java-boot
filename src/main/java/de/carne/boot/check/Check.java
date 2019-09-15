@@ -75,6 +75,34 @@ public final class Check {
 	 * Checks and ensures that a specific condition is met.
 	 *
 	 * @param condition the condition to check.
+	 * @throws IllegalArgumentException if the condition is not met.
+	 */
+	public static void isTrue(boolean condition) {
+		if (!condition) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	/**
+	 * Checks and ensures that a specific condition is met.
+	 * <p>
+	 * The {@linkplain MessageFormat} class is used to format an exception message in case the check fails.
+	 *
+	 * @param condition the condition to check.
+	 * @param pattern the exception message pattern to use in case the check fails.
+	 * @param arguments the exception message arguments to use in case the check fails.
+	 * @throws IllegalArgumentException if the condition is not met.
+	 */
+	public static void isTrue(boolean condition, String pattern, Object... arguments) {
+		if (!condition) {
+			throw new IllegalArgumentException(formatMessage(pattern, arguments));
+		}
+	}
+
+	/**
+	 * Checks and ensures that a specific condition is met.
+	 *
+	 * @param condition the condition to check.
 	 * @throws IllegalStateException if the condition is not met.
 	 */
 	public static void assertTrue(boolean condition) {

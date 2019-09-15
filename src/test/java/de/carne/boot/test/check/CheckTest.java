@@ -47,6 +47,21 @@ class CheckTest {
 	}
 
 	@Test
+	void testCheckIsTrue() {
+		Check.isTrue(true);
+		Check.isTrue(true, getClass().getSimpleName());
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isTrue(false);
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isTrue(false, getClass().getSimpleName());
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isTrue(false, MESSAGE_PATTERN, getClass().getSimpleName());
+		});
+	}
+
+	@Test
 	void testCheckAssertTrue() {
 		Check.assertTrue(true);
 		Check.assertTrue(true, getClass().getSimpleName());
