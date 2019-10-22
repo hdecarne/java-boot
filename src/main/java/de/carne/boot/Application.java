@@ -71,6 +71,7 @@ public final class Application {
 
 		try {
 			if (DEBUG) {
+				debug("VM/Version: " + System.getProperty("java.vm.name") + "/" + System.getProperty("java.version"));
 				debug("Booting application...");
 			}
 			status = APPLICATION_MAIN.set(setupApplication()).run(args);
