@@ -31,6 +31,7 @@ import de.carne.boot.logging.ProxyHandler;
  */
 public class Slf4jProxy implements Proxy {
 
+	@SuppressWarnings("squid:S3416")
 	private final Logger logger = LoggerFactory.getLogger(ProxyHandler.class);
 
 	@Override

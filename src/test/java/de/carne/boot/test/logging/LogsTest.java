@@ -105,9 +105,9 @@ class LogsTest {
 		Assertions.assertEquals("Invalid", Logs.getStringProperty(manager, propertyBase + ".invalid", ""));
 		Assertions.assertEquals("Unknown", Logs.getStringProperty(manager, propertyBase + ".unnown", "Unknown"));
 
-		Assertions.assertEquals(Logs.getIntProperty(manager, propertyBase + ".intOne", -1), 1);
-		Assertions.assertEquals(Logs.getIntProperty(manager, propertyBase + ".intTwo", -1), 2);
-		Assertions.assertEquals(Logs.getIntProperty(manager, propertyBase + ".invalid", -1), -1);
+		Assertions.assertEquals(1, Logs.getIntProperty(manager, propertyBase + ".intOne", -1));
+		Assertions.assertEquals(2, Logs.getIntProperty(manager, propertyBase + ".intTwo", -1));
+		Assertions.assertEquals(-1, Logs.getIntProperty(manager, propertyBase + ".invalid", -1));
 
 		Assertions.assertTrue(Logs.getBooleanProperty(manager, propertyBase + ".booleanTrue", false));
 		Assertions.assertFalse(Logs.getBooleanProperty(manager, propertyBase + ".booleanFalse", true));
@@ -135,7 +135,7 @@ class LogsTest {
 
 	@Test
 	void testFlush() {
-		Logs.flush();
+		Assertions.assertDoesNotThrow(() -> Logs.flush());
 	}
 
 }

@@ -54,14 +54,14 @@ class ExceptionsTest {
 
 	@Test
 	void testIgnore() {
-		Exceptions.ignore(null);
-		Exceptions.ignore(new NullPointerException());
+		Assertions.assertDoesNotThrow(() -> Exceptions.ignore(null));
+		Assertions.assertDoesNotThrow(() -> Exceptions.ignore(new NullPointerException()));
 	}
 
 	@Test
 	void testWarn() {
-		Exceptions.warn(null);
-		Exceptions.warn(new NullPointerException());
+		Assertions.assertDoesNotThrow(() -> Exceptions.warn(null));
+		Assertions.assertDoesNotThrow(() -> Exceptions.warn(new NullPointerException()));
 	}
 
 	@Test

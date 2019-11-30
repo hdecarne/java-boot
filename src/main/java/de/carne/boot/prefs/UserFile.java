@@ -68,11 +68,8 @@ public final class UserFile {
 	public static FileChannel open(Path file, @NonNull OpenOption... extraOptions) throws IOException {
 		Files.createDirectories(file.getParent(), userDirectoryAttributes(file));
 
-		Set<OpenOption> openOptions = new HashSet<>();
+		Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(extraOptions));
 
-		for (OpenOption extraOption : extraOptions) {
-			openOptions.add(extraOption);
-		}
 		openOptions.add(StandardOpenOption.CREATE);
 		return FileChannel.open(file, openOptions, userFileAttributes(file));
 	}

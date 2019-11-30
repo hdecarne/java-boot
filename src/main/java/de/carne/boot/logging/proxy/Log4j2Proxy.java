@@ -27,12 +27,11 @@ import de.carne.boot.logging.LogLevel;
 import de.carne.boot.logging.ProxyHandler;
 
 /**
- * Log4j 2 (<a href=
- * "https://logging.apache.org/log4j/2.x/">https://logging.apache.org/log4j/2.x/</a>)
- * proxy.
+ * Log4j 2 (<a href= "https://logging.apache.org/log4j/2.x/">https://logging.apache.org/log4j/2.x/</a>) proxy.
  */
 public class Log4j2Proxy implements Proxy {
 
+	@SuppressWarnings("squid:S3416")
 	private final Logger logger = LogManager.getLogger(ProxyHandler.class);
 
 	@Override

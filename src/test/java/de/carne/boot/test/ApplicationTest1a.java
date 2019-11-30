@@ -16,6 +16,7 @@
  */
 package de.carne.boot.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ class ApplicationTest1a {
 
 	@Test
 	void testSucess() {
-		Application.run(TEST_ARGS);
+		Assertions.assertEquals(0, Application.run(TEST_ARGS));
 	}
 
 }
