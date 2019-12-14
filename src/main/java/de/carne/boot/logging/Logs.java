@@ -16,7 +16,6 @@
  */
 package de.carne.boot.logging;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,26 +52,9 @@ public final class Logs {
 	 */
 	public static final ErrorManager DEFAULT_ERROR_MANAGER = new ErrorManager();
 
-	private static final String CONFIG_BOOT = "logging-boot.properties";
-
 	static {
 		// Touch our custom level class to make sure the level names are registered
 		LogLevel.LEVEL_NOTICE.getName();
-		// Makes sure the {@linkplain LogManager} is configured in a minimal way (unless not specific configuration has
-		// already been applied).
-		if (System.getProperty("java.util.logging.config.class") == null
-				&& System.getProperty("java.util.logging.config.file") == null) {
-			File userConfig = new File(new File(System.getProperty("java.home"), "lib"), "logging.properites");
-
-			if (!userConfig.exists()) {
-				try {
-					readConfig(CONFIG_BOOT);
-				} catch (IOException e) {
-					DEFAULT_ERROR_MANAGER.error("Failed to read logging config: " + CONFIG_BOOT, e,
-							ErrorManager.GENERIC_FAILURE);
-				}
-			}
-		}
 	}
 
 	static void initialize() {

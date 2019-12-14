@@ -163,6 +163,9 @@ public final class Application {
 				debug("Applying system properties:");
 			}
 
+			// Make sure a minimal logging configuration is set (may be overridden later)
+			System.setProperty("java.util.logging.config.file", "logging-boot.properties");
+
 			String propertyLine;
 
 			while ((propertyLine = configReader.readLine()) != null) {
