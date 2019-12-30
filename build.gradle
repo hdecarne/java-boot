@@ -33,8 +33,10 @@ repositories {
 	maven { url "https://oss.jfrog.org/libs-release/" }
 }
 
-// We don't use Log4j2 annotation processing
 tasks.withType(JavaCompile) {
+	// Do not generate debug infos
+	options.compilerArgs += ["-g:none"]
+	// We don't use Log4j2 annotation processing
 	options.compilerArgs += ["-proc:none"]
 }
 
