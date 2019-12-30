@@ -48,6 +48,11 @@ public final class Logs {
 	}
 
 	/**
+	 * Name of pre-defined boot logging config.
+	 */
+	public static final String CONFIG_BOOT = "logging-boot.properties";
+
+	/**
 	 * Default {@linkplain ErrorManager} instance to use for error reporting.
 	 */
 	public static final ErrorManager DEFAULT_ERROR_MANAGER = new ErrorManager();
@@ -55,6 +60,18 @@ public final class Logs {
 	static {
 		// Touch our custom level class to make sure the level names are registered
 		LogLevel.LEVEL_NOTICE.getName();
+		// Make sure the {@linkplain LogManager} is configured in a minimal way (unless a specific configuration has
+		// been configured or we are not run by the System ClassLoader).
+		if (System.getProperty("java.util.logging.config.class") == null
+				&& System.getProperty("java.util.logging.config.file") == null
+				&& Logs.class.getClassLoader().equals(ClassLoader.getSystemClassLoader())) {
+			try {
+				readConfig(CONFIG_BOOT);
+			} catch (IOException e) {
+				DEFAULT_ERROR_MANAGER.error("Failed to read logging config: " + CONFIG_BOOT, e,
+						ErrorManager.GENERIC_FAILURE);
+			}
+		}
 	}
 
 	static void initialize() {
@@ -82,11 +99,6 @@ public final class Logs {
 			}
 		}
 	}
-
-	/**
-	 * Name of pre-defined boot logging config.
-	 */
-	public static final String CONFIG_BOOT = "logging-boot.properties";
 
 	/**
 	 * Standard name for default logging config.
