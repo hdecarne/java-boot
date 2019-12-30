@@ -84,6 +84,11 @@ public final class Logs {
 	}
 
 	/**
+	 * Name of pre-defined boot logging config.
+	 */
+	public static final String CONFIG_BOOT = "logging-boot.properties";
+
+	/**
 	 * Standard name for default logging config.
 	 */
 	public static final String CONFIG_DEFAULT = "logging-default.properties";
