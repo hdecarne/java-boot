@@ -34,8 +34,6 @@ repositories {
 }
 
 tasks.withType(JavaCompile) {
-	// Do not generate debug infos
-	options.compilerArgs += ["-g:none"]
 	// We don't use Log4j2 annotation processing
 	options.compilerArgs += ["-proc:none"]
 }
