@@ -23,8 +23,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * A {@linkplain java.util.logging.Handler} which makes use of the {@linkplain Console} class.
  * <p>
@@ -50,10 +48,10 @@ public class ConsoleHandler extends StreamHandler {
 	}
 
 	@Override
-	public synchronized void publish(@Nullable LogRecord record) {
+	public synchronized void publish(LogRecord record) {
 		Console console = System.console();
 
-		if (record != null && console != null) {
+		if (console != null) {
 			if (isLoggable(record)) {
 				publishToConsole(console, record, true);
 			}
