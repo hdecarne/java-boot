@@ -42,11 +42,11 @@ jar {
 			'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ").format(new Date()),
 			'X-Compile-Target-JDK': targetCompatibility,
 			'X-Compile-Source-JDK': sourceCompatibility,
-			'X-Project-Id': project.name,
-			'X-Project-Name': project.name,
-			'X-Project-Version': project.version,
-			'X-Project-DocURL': projectUrl,
-			'X-Project-License': projectLicenseUrl
+			'X-Module-Id': project.name,
+			'X-Module-Name': project.name,
+			'X-Module-Version': project.version,
+			'X-Module-DocURL': projectUrl,
+			'X-Module-License': projectLicenseUrl
 		)
 	}
 }
