@@ -72,6 +72,16 @@ class ExceptionsTest {
 	}
 
 	@Test
+	void testGetCause() {
+		Throwable cause = new IOException();
+		Throwable exceptionWithCause = new Exception(cause);
+		Throwable exceptionWithoutCause = new Exception();
+
+		Assertions.assertEquals(cause, Exceptions.getCause(exceptionWithCause));
+		Assertions.assertEquals(exceptionWithoutCause, Exceptions.getCause(exceptionWithoutCause));
+	}
+
+	@Test
 	void testGetStackTrace() {
 		String stackTrace = Exceptions.getStackTrace(new IOException());
 

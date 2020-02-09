@@ -99,6 +99,18 @@ public final class Exceptions {
 	}
 
 	/**
+	 * Checks and gets the submitted {@linkplain Throwable}'s causing exception.
+	 *
+	 * @param exception the {@linkplain Throwable} to get the causing exception for.
+	 * @return the causing exception of the submitted exception itself if no cause is set.
+	 */
+	public static Throwable getCause(Throwable exception) {
+		Throwable cause = exception.getCause();
+
+		return (cause != null ? cause : exception);
+	}
+
+	/**
 	 * Gets a {@linkplain Throwable}'s stack trace.
 	 *
 	 * @param exception the {@linkplain Throwable} to get the stack trace for.
