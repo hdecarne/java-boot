@@ -49,7 +49,8 @@ public class FilePreferencesFactory implements PreferencesFactory {
 		if (STORE_HOME != null) {
 			store = FilePreferencesStore.fromFile(systemRootFile());
 		} else {
-			LOG.info("Store home property {0} not set; using transient store", PROPERTY_STORE_HOME);
+			LOG.debug("Store home property {0} not set; using transient store", PROPERTY_STORE_HOME);
+
 			store = FilePreferencesStore.fromData(new Properties());
 		}
 		return store.root();
@@ -62,7 +63,8 @@ public class FilePreferencesFactory implements PreferencesFactory {
 		if (STORE_HOME != null) {
 			store = FilePreferencesStore.fromFile(userRootFile());
 		} else {
-			LOG.info("Store home property {0} not set; using transient store", PROPERTY_STORE_HOME);
+			LOG.debug("Store home property {0} not set; using transient store", PROPERTY_STORE_HOME);
+
 			store = FilePreferencesStore.fromData(new Properties());
 		}
 		return store.root();
