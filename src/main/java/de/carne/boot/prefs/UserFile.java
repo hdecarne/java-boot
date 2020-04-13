@@ -125,7 +125,7 @@ public final class UserFile {
 	}
 
 	private static FileAttribute<List<AclEntry>> asFileAttribute(@NonNull AclEntry... value) {
-		return new FileAttribute<List<AclEntry>>() {
+		return new FileAttribute<>() {
 
 			@Override
 			public String name() {
