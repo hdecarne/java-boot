@@ -19,6 +19,11 @@ def resolveProperty(propertyName, envName, defValue = "<undefined>") {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+tasks.withType(JavaCompile) {
+	// We don't use Log4j2 annotation processing
+	options.compilerArgs += ["-proc:none"]
+}
+
 repositories {
 	if(snapshotBuild) {
 		mavenLocal()
@@ -26,11 +31,6 @@ repositories {
 	}
 	jcenter()
 	maven { url "https://oss.jfrog.org/libs-release/" }
-}
-
-tasks.withType(JavaCompile) {
-	// We don't use Log4j2 annotation processing
-	options.compilerArgs += ["-proc:none"]
 }
 
 jar {
